@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Journey of Yoonsik</title>
+    <style>
+        /* ================= 全局重置 ================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ================= 主题变量 ================= */
+        :root {
+            --bg: #0c0c0f; /* 页面底色 */
+            --line: rgba(160, 216, 239, 0.20); /* 主描边 */
+            --line-soft: rgba(255, 255, 255, 0.07); /* 弱描边 */
+            --gold: #7ec6e6; /* 主强调色（蓝） */
+            --gold-soft: #a0d8ef; /* 浅强调色 */
+            --text: #eae7e1; /* 正文文字 */
+            --muted: #8d8983; /* 次要文字 */
+            --radius: 16px; /* 统一圆角 */
+        }
+
+        html {
+            scroll-behavior: smooth; /* 锚点/滚动平滑 */
+        }
+
+        body {
+            /* 多层径向渐变 + 底色，营造暗色氛围 */
+            background: radial-gradient(900px 500px at 15% -5%, rgba(160,216,239,.12), transparent 60%), radial-gradient(800px 450px at 90% 5%, rgba(110,130,200,.07), transparent 60%), var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+            line-height: 1.75;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- HEADER 顶部标题与导航 ---------- */
+        .site-header {
+            padding: 72px 24px 0;
+            text-align: center;
+        }
+
+        /* 小标题（ACTOR · 김윤식） */
+        .eyebrow-top {
+            font-size: 13px;
+            letter-spacing: .42em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        /* 主标题：渐变文字（白 → 米金） */
+        .site-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 400;
+            font-size: clamp(30px, 5.2vw, 56px);
+            letter-spacing: .02em;
+            line-height: 1.2;
+            background: linear-gradient(180deg, #ffffff 0%, #cfc7b6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* 三个 Tab 组成的胶囊导航 */
+        .tabs {
+            display: inline-flex;
+            gap: 4px;
+            margin-top: 40px;
+            padding: 5px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255,255,255,.02);
+        }
+
+        .tab {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            padding: 10px 30px;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color .3s, background .3s, box-shadow .3s;
+        }
+
+            .tab:hover {
+                color: var(--gold-soft);
+            }
+
+            /* 选中态：渐变底色 + 阴影 */
+            .tab.active {
+                color: #0a1e2a;
+                background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+                box-shadow: 0 6px 20px rgba(160,216,239,.22);
+            }
+
+        /* ---------- LAYOUT 主体布局 ---------- */
+        main {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 56px 24px 110px;
+        }
+
+        /* 面板：默认隐藏，由 tab 控制显示 */
+        .panel {
+            display: none;
+            animation: fadeUp .55s ease both; /* 出现时向上淡入 */
+        }
+
+            .panel.active {
+                display: block;
+            }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* 通用隐藏类（用于 Yoon 模块内部视图切换） */
+        .hidden {
+            display: none !important;
+        }
+
+        /* 小标题统一样式 */
+        .eyebrow {
+            font-size: 13px;
+            letter-spacing: .4em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        /* ---------- KIM 面板：人物主视觉 ---------- */
+        .kim-hero {
+            display: grid;
+            grid-template-columns: 320px 1fr; /* 左头像 + 右文字 */
+            gap: 52px;
+            align-items: center;
+        }
+
+        /* 头像容器 */
+        .portrait img {
+            width: 100%;
+            aspect-ratio: 4 / 5; /* 固定 4:5 比例 */
+            object-fit: cover;
+            border-radius: var(--radius);
+            display: block;
+            border: 1px solid var(--line-soft);
+            background: linear-gradient(135deg, #1b1b21, #26262f); /* 图片未加载时的占位底色 */
+        }
+
+        .hero-text h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 400;
+            font-size: clamp(36px, 5vw, 52px);
+            line-height: 1.15;
+            letter-spacing: .01em;
+        }
+
+        /* 韩文/汉字名 */
+        .kr {
+            color: var(--muted);
+            margin-top: 10px;
+            letter-spacing: .18em;
+            font-size: 16px;
+        }
+
+        /* 引言段落（左侧竖线） */
+        .lede {
+            margin-top: 28px;
+            font-size: 19px;
+            color: #c9c5bd;
+            line-height: 2;
+            border-left: 2px solid var(--line);
+            padding-left: 20px;
+        }
+
+        /* 信息卡固定 3 列 × 2 行 */
+        .facts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px; /* 用 1px 缝隙 + 底色做出分隔线效果 */
+            background: var(--line-soft);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-top: 68px;
+        }
+
+        .fact {
+            background: #101015;
+            padding: 18px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+            .fact .k { /* 字段名 */
+                font-size: 13px;
+                letter-spacing: .22em;
+                color: var(--gold);
+                text-transform: uppercase;
+            }
+
+            .fact .v { /* 字段值 */
+                font-size: 17px;
+                color: #d6d2ca;
+            }
+
+        /* 生平正文区块 */
+        .bio {
+            margin-top: 76px;
+        }
+
+            .bio h3 {
+                font-family: Georgia, "Times New Roman", serif;
+                font-weight: 400;
+                font-size: 24px;
+                letter-spacing: .04em;
+                color: var(--gold-soft);
+                margin: 44px 0 16px;
+            }
+
+                .bio h3:first-child {
+                    margin-top: 0;
+                }
+
+            .bio p {
+                color: #b9b5ad;
+                font-size: 17.5px;
+                margin-bottom: 16px;
+            }
+
+        /* ---------- YOON 面板：时间轴 ---------- */
+        .view-head {
+            margin-bottom: 40px;
+        }
+
+        .view-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 400;
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.25;
+        }
+
+        .view-sub {
+            color: var(--muted);
+            margin-top: 12px;
+            max-width: 640px;
+            font-size: 17px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        /* 年份卡片网格：自适应列数 */
+        .years-grid {
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        }
+
+        /* 年份卡片（本身是 button） */
+        .year-card {
+            position: relative;
+            text-align: left;
+            font-family: inherit;
+            color: inherit;
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.008));
+            cursor: pointer;
+            transition: transform .35s ease, border-color .35s ease, background .35s ease;
+        }
+
+            .year-card:hover {
+                transform: translateY(-5px); /* 悬停轻微上浮 */
+                border-color: rgba(160,216,239,.60);
+                background: linear-gradient(180deg, rgba(160,216,239,.12), rgba(255,255,255,.01));
+            }
+
+        .year-num {
+            font-family: Georgia, serif;
+            font-size: 36px;
+            color: var(--gold-soft);
+            line-height: 1.1;
+        }
+
+        .year-sum {
+            margin-top: 14px;
+            font-size: 15.5px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        /* 返回按钮 + 面包屑所在的一行 */
+        .subnav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn {
+            font-family: inherit;
+            font-size: 15px;
+            letter-spacing: .08em;
+            padding: 8px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--gold-soft);
+            cursor: pointer;
+            transition: background .3s, border-color .3s;
+        }
+
+            .back-btn:hover {
+                background: rgba(160,216,239,.14);
+                border-color: rgba(160,216,239,.55);
+            }
+
+        .crumb {
+            font-size: 14px;
+            letter-spacing: .2em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* 月份卡片网格 */
+        .months-grid {
+            grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .month-card {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
+            font-family: inherit;
+            text-align: left;
+            color: inherit;
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid var(--line-soft);
+            background: rgba(255,255,255,.02);
+            cursor: pointer;
+            transition: transform .3s, border-color .3s, background .3s;
+        }
+
+            .month-card:hover {
+                transform: translateY(-3px);
+                border-color: rgba(160,216,239,.55);
+                background: rgba(160,216,239,.09);
+            }
+
+        .month-num { /* 01 ~ 12 */
+            font-family: Georgia, serif;
+            font-size: 15px;
+            letter-spacing: .24em;
+            color: var(--gold);
+        }
+
+        .month-name { /* 一月 ~ 十二月 */
+            font-size: 18px;
+            color: #ddd9d1;
+        }
+
+        .month-count { /* 照片数量提示 */
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* 照片列表 */
+        .photo-list {
+            margin-top: 40px;
+        }
+
+        /* 单条照片：左图右文字 */
+        .photo-item {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 34px;
+            align-items: center;
+            padding: 34px 0;
+            border-top: 1px solid var(--line-soft);
+        }
+
+            .photo-item:first-child { /* 第一条不要上边线 */
+                border-top: 0;
+                padding-top: 0;
+            }
+
+            .photo-item img {
+                width: 100%;
+                height: auto;
+                max-height: 78vh; /* 防止长图撑爆屏幕 */
+                object-fit: contain;
+                border-radius: 12px;
+                display: block;
+                margin: 0 auto;
+                border: 1px solid var(--line-soft);
+                background: linear-gradient(135deg, #1b1b21, #26262f);
+                transition: transform .5s ease;
+            }
+
+            .photo-item:hover img {
+                transform: scale(1.015); /* 悬停轻微放大 */
+            }
+
+        .photo-meta .idx { /* 序号 + 日期 */
+            font-family: Georgia, serif;
+            font-size: 15px;
+            letter-spacing: .3em;
+            color: var(--gold);
+        }
+
+        .photo-meta p { /* 照片描述 */
+            margin-top: 14px;
+            color: #c3bfb7;
+            font-size: 17px;
+            line-height: 1.9;
+        }
+
+        /* ---------- SIK 面板：联系方式 ---------- */
+        .sik-grid {
+            display: grid;
+            grid-template-columns: .9fr 1.1fr;
+            gap: 56px;
+            margin-top: 44px;
+        }
+
+        .contact-block {
+            margin-bottom: 30px;
+        }
+
+            .contact-block .k { /* 联系方式标签 */
+                font-size: 13px;
+                letter-spacing: .24em;
+                color: var(--gold);
+                text-transform: uppercase;
+                display: block;
+                margin-bottom: 6px;
+            }
+
+            .contact-block .v { /* 联系方式内容 */
+                font-size: 17.5px;
+                color: #d3cfc7;
+            }
+
+                .contact-block .v a {
+                    color: #d3cfc7;
+                    text-decoration: none;
+                    border-bottom: 1px solid var(--line);
+                    transition: color .3s, border-color .3s;
+                }
+
+                    .contact-block .v a:hover {
+                        color: var(--gold-soft);
+                        border-color: var(--gold);
+                    }
+
+        /* ---------- 表单样式（当前页面未使用，保留备用） ---------- */
+        .form-row {
+            margin-bottom: 18px;
+        }
+
+            .form-row label {
+                display: block;
+                font-size: 13px;
+                letter-spacing: .22em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 8px;
+            }
+
+            .form-row input,
+            .form-row select,
+            .form-row textarea {
+                width: 100%;
+                padding: 13px 16px;
+                border-radius: 10px;
+                border: 1px solid var(--line-soft);
+                background: rgba(255,255,255,.025);
+                color: var(--text);
+                font-family: inherit;
+                font-size: 16.5px;
+                outline: none;
+                transition: border-color .3s, background .3s;
+            }
+
+            .form-row textarea {
+                resize: vertical;
+                min-height: 130px;
+            }
+
+                /* 聚焦高亮 */
+                .form-row input:focus,
+                .form-row select:focus,
+                .form-row textarea:focus {
+                    border-color: rgba(160,216,239,.65);
+                    background: rgba(160,216,239,.07);
+                }
+
+            .form-row select option {
+                background: #15151a;
+            }
+
+        .submit-btn {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            padding: 14px 40px;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+            color: #0a1e2a;
+            cursor: pointer;
+            transition: opacity .3s, transform .3s;
+        }
+
+            .submit-btn:hover {
+                opacity: .9;
+                transform: translateY(-2px);
+            }
+
+        /* 提交后的提示文字（默认透明，加 .show 才出现） */
+        .form-note {
+            margin-top: 16px;
+            font-size: 15.5px;
+            color: var(--gold-soft);
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity .4s, transform .4s;
+        }
+
+            .form-note.show {
+                opacity: 1;
+                transform: none;
+            }
+
+        /* ---------- 点击冒心效果 ---------- */
+        .heart-pop {
+            position: fixed; /* 用 fixed，配合 clientX/clientY 定位到点击点 */
+            pointer-events: none; /* 不拦截鼠标事件，避免影响原有交互 */
+            z-index: 9999;
+            color: var(--gold-soft); /* 默认浅蓝，JS 会覆盖成随机色 */
+            transform: translate(-50%, -50%);
+            animation: heartPop 1.1s cubic-bezier(.22, .61, .36, 1) forwards;
+            will-change: transform, opacity;
+        }
+
+        .heart-pop svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            fill: currentColor; /* 跟随 .heart-pop 的 color */
+            filter: drop-shadow(0 0 6px rgba(160, 216, 239, .85));
+        }
+
+        /* 心形飘起 → 轻微放大 → 淡出并上浮 */
+        @keyframes heartPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(.2) rotate(var(--rot, 0deg));
+            }
+
+            18% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot, 0deg));
+            }
+
+            60% {
+                opacity: .9;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% - 110px)) scale(.7) rotate(var(--rot, 0deg));
+            }
+        }
+
+        /* 尊重系统“减少动态效果”偏好：只淡出不飘动 */
+        @media (prefers-reduced-motion: reduce) {
+            @keyframes heartPop {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(.8);
+                }
+
+                30% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+
+                100% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
+        }
+
+        /* ---------- FOOTER 页脚 ---------- */
+        footer {
+            text-align: center;
+            padding: 40px 24px 60px;
+            border-top: 1px solid var(--line-soft);
+            color: #5f5c57;
+            font-size: 14px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+            footer .credit {
+                margin-top: 12px;
+                font-size: 14px;
+                letter-spacing: .08em;
+                text-transform: none;
+                color: #4a4844;
+            }
+
+        /* ---------- 响应式：平板（≤860px） ---------- */
+        @media (max-width: 860px) {
+            .kim-hero {
+                grid-template-columns: 1fr; /* 头像与文字改为上下排列 */
+                gap: 34px;
+            }
+
+            .portrait {
+                max-width: 300px;
+            }
+
+            .sik-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .photo-item {
+                grid-template-columns: 1fr; /* 照片与文字改为上下排列 */
+                gap: 18px;
+            }
+
+                .photo-item:first-child {
+                    padding-top: 0;
+                }
+
+            .facts {
+                grid-template-columns: repeat(2, 1fr); /* 信息卡 3 列 → 2 列 */
+            }
+
+            .photo-item img {
+                max-height: 70vh;
+            }
+        }
+
+        /* ---------- 响应式：手机（≤600px） ---------- */
+        @media (max-width: 600px) {
+            .site-header {
+                padding-top: 48px;
+            }
+
+            .tab {
+                padding: 9px 20px;
+                letter-spacing: .16em;
+                font-size: 15px;
+            }
+
+            main {
+                padding-top: 42px;
+            }
+
+            .facts {
+                grid-template-columns: 1fr; /* 信息卡 2 列 → 1 列 */
+            }
+
+            .months-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .photo-item img {
+                max-height: 62vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= 顶部：标题 + 三个 Tab ================= -->
+    <header class="site-header">
+        <p class="eyebrow-top">Actor · 김윤식</p>
+        <h1 class="site-title">The Journey of Yoonsik</h1>
+
+        <nav class="tabs" role="tablist">
+            <button class="tab active" data-tab="kim" role="tab">Kim</button>
+            <button class="tab" data-tab="yoon" role="tab">Yoon</button>
+            <button class="tab" data-tab="sik" role="tab">Sik</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ================= KIM：人物简介 ================= -->
+        <section id="kim" class="panel active">
+            <!-- 主视觉：左头像 + 右文字 -->
+            <div class="kim-hero">
+                <div class="portrait">
+                    <img src="images/portrait.png" alt="Kim Yoonsik 肖像">
+                </div>
+                <div class="hero-text">
+                    <p class="eyebrow">Actor · Seoul</p>
+                    <h2>Kim Yoonsik</h2>
+                    <p class="kr">김윤식 · 金允植</p>
+                    <p class="lede">“命运是要靠自己开拓的，<br>如果没有幸运草，那就自己做一个。”</p>
+                </div>
+            </div>
+
+            <!-- 基本信息卡（3×2） -->
+            <div class="facts">
+                <div class="fact"><span class="k">出生</span><span class="v">1998.05.18 · 全州</span></div>
+                <div class="fact"><span class="k">身高</span><span class="v">187cm</span></div>
+                <div class="fact"><span class="k">出道</span><span class="v">2018 · 综艺节目《恋爱的干预第二季》</span></div>
+                <div class="fact"><span class="k">MBTI</span><span class="v">INFP</span></div>
+                <div class="fact"><span class="k">经纪公司</span><span class="v">ANICENT Official</span></div>
+                <div class="fact"><span class="k">毕业院校</span><span class="v">东国大学</span></div>
+            </div>
+
+            <!-- 生平与经历 -->
+            <article class="bio">
+                <h3>关于他</h3>
+                <p>
+                    金允植出生于韩国全罗北道全州市，毕业于首尔翰林艺术高中实用舞蹈系，后考入东国大学戏剧电影学系。
+                    他童年时期曾患有妥瑞症，为了找回自信、学会健康地表达自己的情绪，他做过很多尝试，不仅有运动或武术，表演也是其中之一。
+                    当金允植开始学习表演时，他尚未怀想过，自己有一天真的可以成为演员。
+                    而随着表演经历的积累，他发现自己在角色中的成长。
+                </p>
+                <p>
+                    “当我在准备作品时，会反复琢磨角色。
+                    但我最终看到，角色能够按照自己想象的样子呈现出来时，那种满足感真的无法用任何东西来比较，是一种巨大的幸福。
+                    我觉得，那一刻就是演员这个职业最有魅力的时候。”
+                </p>
+
+                <h3>经历</h3>
+                <p>
+                    <strong>2018｜出道</strong><br>
+                    2018年，金允植以艺名“尹道健”通过综艺节目《恋爱的干预第二季》正式出道。
+                </p>
+                <p>
+                    <strong>2019-2022｜沉潜</strong><br>
+                    2019年出演《怎么就结婚了》；
+                    2020年出演的《恋爱的干预第三季》播出；
+                    2021年参演《机智的医生生活2》，饰演实习医生；
+                    2022年在《二十五，二十一》中饰演实习记者申俊赫，参演《我受够了》。
+                </p>
+                <p>
+                    <strong>2025｜被记住</strong><br>
+                    2025年在《竞选伙伴》中饰演姜载沅。这个角色和现实中的他完全是两个极端，但他做了很多练习，将这个角色演得足够出彩，足够有说服力。
+                </p>
+                <p>
+                    <strong>2026｜绽放</strong><br>
+                    2026年在《检察官的提案》中饰演朱泰善，金允植的名字也因为这个角色被更多人熟知。
+                    他的小红书官方账号粉丝数短短半个月从零涨到超30万，微博开通不到一小时涨粉便破6万，Instagram粉丝现已突破了70万。
+                    旅程还在继续，金允植，继续走花路吧。
+                </p>
+            </article>
+        </section>
+
+        <!-- ================= YOON：时间轴（年份 → 月份 → 照片） ================= -->
+        <section id="yoon" class="panel">
+            <!-- 第一级视图：年份列表（由 JS 渲染） -->
+            <div id="view-years" class="yoon-view">
+                <div class="view-head">
+                    <p class="eyebrow">Timeline</p>
+                    <h2 class="view-title">2018 — 2026</h2>
+                    <p class="view-sub">从试镜走廊走到聚光灯下。选择一年，看看那一年发生了什么。</p>
+                </div>
+                <div class="grid years-grid" id="yearsGrid"></div>
+            </div>
+
+            <!-- 第二级视图：月份列表（由 JS 填充） -->
+            <div id="view-months" class="yoon-view hidden"></div>
+
+            <!-- 第三级视图：照片列表（由 JS 填充） -->
+            <div id="view-photos" class="yoon-view hidden"></div>
+        </section>
+
+        <!-- ================= SIK：联系方式 ================= -->
+        <section id="sik" class="panel">
+            <div class="view-head">
+                <p class="eyebrow">Contact</p>
+                <h2 class="view-title">Contact Us</h2>
+                <p class="view-sub" style="max-width: none;">
+                    技术有限，现生繁忙，时间仓促，网站不可避免地有很多缺陷，也有很多照片没有放上去，为此深表遗憾。<br>
+                    本网站素材主要来源于：Instagram账号@kimyoonsik_及其评论区粉丝留言、@kimyunsik_ina，YouTube账号@kimyoonsik_archive，感谢各位能留下这些宝贵回忆。<br>
+                    素材投稿、版权说明、粉丝留言、意见指导——都可以写信给我们。
+                </p>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="sik-info">
+                <div class="contact-block">
+                    <span class="k">邮箱</span>
+                    <span class="v">lullaby0518@163.com</span>
+                </div>
+                <div class="contact-block">
+                    <span class="k">处理时间</span>
+                    <span class="v">周一至周五 10:00 — 17:00</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div>The Journey of Yoonsik · 2018 — 2026</div>
+        <div class="credit">Created by lullaby·素材来源于网络</div>
+    </footer>
+
+    <script>
+        /* =====================================================
+        数据区
+        ===================================================== */
+
+        /* 月份中文名，下标 0 = 一月 */
+        const MONTHS = ["一月", "二月", "三月", "四月", "五月", "六月",
+        "七月", "八月", "九月", "十月", "十一月", "十二月"];
+
+        /* 需要展示的年份 */
+        const YEARS = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
+        /* 是否开启图片自动探测：
+        当某个月没有在 PHOTO_DAYS 中配置时，
+        自动按 images/年-月-序号.png 依次探测，直到 404 为止 */
+        const AUTO_DETECT = true;
+
+        /* 每年的年度概述（显示在年份卡片与月份页标题下） */
+        const YEAR_DATA = {
+        2018: { summary: "从校园走向舞台，所有的第一次都发生在这年。" },
+        2019: { summary: "在小剧场与短片之间来回穿梭，哪怕出场时间很短，也会反复打磨演技。" },
+        2020: { summary: "有人很早迎来机会，有人需要经过漫长等待。" },
+        2021: { summary: "跑龙套的那些年，还好有了一只小猫作伴。" },
+        2022: { summary: "一个人跑行程、试镜，向感兴趣的角色自己投递简历。" },
+        2023: { summary: "明明特别想演戏却没有机会表演的那些时刻，真的非常痛苦也很难熬。" },
+        2024: { summary: "毕竟也是普通人，会慢慢变得有些消极。" },
+        2025: { summary: "在《竞选伙伴》中被更多人看见，九年说不上开心也谈不上难过。" },
+        2026: { summary: "长久以来的坚持得到回报，这个夏天终于迎来了自己的闪耀时刻。" }
+        };
+
+        /* =====================================================
+        照片配置
+        结构：PHOTO_DAYS[年][月] = [ { day: 日, text: "描述" }, ... ]
+        数组下标 i 决定图片文件名：images/年-月-i.png
+        某月为 [] 时，若 AUTO_DETECT 为 true，则走自动探测
+        ===================================================== */
+        const PHOTO_DAYS = {
+        2018: {
+        1: [
+        { day: 1, text: "不知道这个AC众星是什么时候的，暂且放在这里吧" }
+        ],
+        2: [
+        { day: 15, text: "农历新年祝福" }
+        ],
+        3: [
+        { day: 21, text: "其实这是2017年的视频，但是我没有做17年的，只好放在这里" },
+        { day: 21, text: "那时候的fighting和笑容都和现在很像呢，你没有变" }
+        ],
+        4: [
+        { day: 14, text: "网络剧《高中日记》预告片" },
+        { day: 14, text: "挥手方式和现在很像啊，好可爱" },
+        { day: 14, text: "网络剧《高中日记》剧中" },
+        { day: 14, text: "网络剧《高中日记》剧中" }
+        ],
+        5: [
+
+        ],
+        6: [
+
+        ],
+        7: [
+
+        ],
+        8: [
+        { day: 14, text: "《恋爱的干预》剧本围读" },
+        { day: 14, text: "《恋爱的干预》剧本围读" },
+        { day: 14, text: "《恋爱的干预》剧本围读" }
+        ],
+        9: [
+
+        ],
+        10: [
+
+        ],
+        11: [
+
+        ],
+        12: [
+
+        ]
+        },
+        2019: {
+        1: [
+
+        ],
+        2: [
+
+        ],
+        3: [
+
+        ],
+        4: [
+
+        ],
+        5: [
+
+        ],
+        6: [
+
+        ],
+        7: [
+
+        ],
+        8: [
+        { day: 9, text: "参加Mnet《The Call2》" }
+        ],
+        9: [
+        { day: 10, text: "《Memory of Junuary》" },
+        { day: 10, text: "《Memory of Junuary》" },
+        { day: 10, text: "《Memory of Junuary》" },
+        { day: 17, text: "vogue" }
+        ],
+        10: [
+        { day: 16, text: "Jeju airport" }
+        ],
+        11: [
+
+        ],
+        12: [
+
+        ]
+        },
+        2020: {
+        1: [
+        { day: 11, text: "好欧巴的感觉" }
+        ],
+        2: [
+        { day: 1, text: "VOGUE" },
+        { day: 6, text: "欧巴忧郁时刻" },
+        { day: 6, text: "换成黑白的更忧郁了呢" }
+        ],
+        3: [
+
+        ],
+        4: [
+        { day: 7, text: "很好看的帽子" },
+        { day: 7, text: "其实动图更好看呢" }
+        ],
+        5: [
+
+        ],
+        6: [
+
+        ],
+        7: [
+
+        ],
+        8: [
+
+        ],
+        9: [
+
+        ],
+        10: [
+        { day: 13, text: "时隔5年，再次相见。" }
+        ],
+        11: [
+
+        ],
+        12: [
+        { day: 25, text: "圣诞节直播，你说粉丝见面会只要30人就够了" },
+        { day: 31, text: "新年快乐" }
+        ]
+        },
+        2021: {
+        1: [
+        { day: 15, text: "好稚嫩哦" }
+        ],
+        2: [
+
+        ],
+        3: [
+
+        ],
+        4: [
+
+        ],
+        5: [
+
+        ],
+        6: [
+
+        ],
+        7: [
+        { day: 8, text: "近一个月，你收到了很多礼物" },
+        { day: 8, text: "从那么早之前，你就说你要努力成为能为大家展现更好面貌的演员" },
+        { day: 13, text: "对着口罩也能沉思吗哈哈哈哈" },
+        { day: 16, text: "和白鲸玩耍互动（单方面的哈哈哈哈）" },
+        { day: 16, text: "好活泼呀" }
+        ],
+        8: [
+        { day: 4, text: "头发长长了一点。" },
+        { day: 4, text: "衬衫爱好者初见雏形" },
+        { day: 26, text: "《机智的医生生活2》中的实习医生,这部剧真的很火呢" },
+        { day: 26, text: "努力生活的允植啊" }
+        ],
+        9: [
+
+        ],
+        10: [
+        { day: 14, text: "ins潮男又上线了" },
+        { day: 14, text: "依旧拖鞋爱好者" }
+        ],
+        11: [
+        { day: 4, text: "《提高音量》电台" },
+        { day: 11, text: "《提高音量》电台" },
+        { day: 12, text: "U+迪士尼广告" },
+        { day: 12, text: "U+迪士尼广告" },
+        { day: 12, text: "U+迪士尼广告幕后" },
+        { day: 18, text: "《提高音量》电台" },
+        { day: 25, text: "《提高音量》电台" }
+        ],
+        12: [
+        { day: 2, text: "9点，KBS《提高音量》节目不见不散" },
+        { day: 2, text: "《提高音量》电台" },
+        { day: 9, text: "《提高音量》电台" },
+        { day: 25, text: "怎么看起来不太开心呢" },
+        { day: 25, text: "在偷看什么呀，好可爱" },
+        { day: 25, text: "好长的腿，让裤子像七分裤一样" }
+        ]
+        },
+        2022: {
+        1: [
+        { day: 11, text: "《周美做完了》第3集" },
+        { day: 16, text: "照片中有两只萌物" },
+        { day: 16, text: "你和三植的眼睛都亮晶晶的" },
+        { day: 13, text: "《提高音量》电台" },
+        { day: 17, text: "剪刀手比耶" },
+        { day: 18, text: "来自KT YF赠送的礼物" },
+        { day: 18, text: "《周美做完了》第5集" },
+        { day: 21, text: "《周美做完了》最后一集" },
+        { day: 21, text: "《周美做完了》最后一集，大家多多关注" }
+        ],
+        2: [
+        { day: 3, text: "《提高音量》电台" },
+        { day: 3, text: "在电台和朋友们的合影" },
+        { day: 10, text: "《提高音量》电台" },
+        { day: 17, text: "缅甸粉丝送来的花" },
+        { day: 24, text: "《提高音量》电台" }
+        ],
+        3: [
+        { day: 2, text: "粉丝说那时候已经很有时尚表现力啦" },
+        { day: 3, text: "《提高音量》电台" },
+        { day: 10, text: "《提高音量》电台" }
+        ],
+        4: [
+        { day: 16, text: "依旧帅哥" },
+        { day: 16, text: "好白啊" },
+        { day: 28, text: "电台照片，好长的腿" }
+        ],
+        5: [
+        { day: 7, text: "潮男来的" },
+        { day: 7, text: "你的衣服都好有品味！" },
+        ],
+        6: [
+
+        ],
+        7: [
+        { day: 16, text: "和Endi的《提高音量》终场直播" },
+        { day: 16, text: "好帅嘻嘻" },
+        { day: 28, text: "你真的高得很突出！" }
+        ],
+        8: [
+        { day: 4, text: "和Jettie、Coco姐姐一起的《只有你觉得没问题的恋爱》" },
+        { day: 4, text: "又认识了新朋友呢" },
+        { day: 11, text: "和Yedi、Coco姐姐一起的《提高音量》！" },
+        ],
+        9: [
+        { day: 12, text: "你这组图的最后一张吓到我啦" },
+        { day: 18, text: "ins潮男再次上线" },
+        { day: 18, text: "喝点小酒" },
+        { day: 21, text: "身材比例真的绝了！" },
+        { day: 21, text: "这身衣服也很好看" }
+        ],
+        10: [
+        { day: 1, text: "汉南洞" },
+        { day: 2, text: "依旧汉南洞" },
+        { day: 2, text: "怎么好像微醺了" },
+        { day: 4, text: "戴黑框眼镜好好看" },
+        { day: 8, text: "新堂" },
+        { day: 8, text: "又卖萌" },
+        { day: 23, text: "这里真的好可爱！" }
+        ],
+        11: [
+
+        ],
+        12: [
+        { day: 24, text: "平安夜，戴了针织帽哦" }
+        ]
+        },
+        2023: {
+        1: [
+        { day: 24, text: "在做咖啡吗" }
+        ],
+        2: [
+
+        ],
+        3: [
+        { day: 24, text: "又在24号发ins" }
+        ],
+        4: [
+        { day: 24, text: "成为月更博主了" }
+        ],
+        5: [
+        { day: 18, text: "生日快乐！" },
+        { day: 18, text: "感谢送上祝福的各位" }
+        ],
+        6: [
+
+        ],
+        7: [
+        { day: 21, text: "好帅啊" },
+        { day: 21, text: "灿烂地笑吧" },
+        { day: 21, text: "又卖萌" }
+        ],
+        8: [
+        { day: 28, text: "进组应援咖啡车" },
+        { day: 21, text: "以后你会有很多这样的应援" }
+        ],
+        9: [
+        { day: 26, text: "是在吃宵夜吗" },
+        { day: 26, text: "这件衣服也好看" },
+        { day: 26, text: "又吃得嘴巴鼓鼓" }
+        ],
+        10: [
+        { day: 26, text: "太帅了真的" }
+        ],
+        11: [
+        { day: 5, text: "和小狗顺玉" },
+        { day: 21, text: "真的好白呀" }
+        ],
+        12: [
+
+        ]
+        },
+        2024: {
+        1: [
+
+        ],
+        2: [
+
+        ],
+        3: [
+
+        ],
+        4: [
+        { day: 2, text: "好有艺术感的车" },
+        { day: 2, text: "这么冷为什么吃冰激凌！" }
+        ],
+        5: [
+
+        ],
+        6: [
+
+        ],
+        7: [
+
+        ],
+        8: [
+
+        ],
+        9: [
+        { day: 20, text: "长这么帅还有什么烦恼吗" },
+        { day: 20, text: "粉丝说这组图很有故事感哦" },
+        { day: 25, text: "你真的很喜欢格子衬衫哈哈哈哈" },
+        { day: 25, text: "又鼓着嘴卖萌！" }
+        ],
+        10: [
+
+        ],
+        11: [
+
+        ],
+        12: [
+        { day: 8, text: "冬天啦" },
+        { day: 8, text: "穿衣服真的很有品啊！" },
+        { day: 8, text: "好优越的五官" },
+        { day: 9, text: "这张滤镜有点梦核呢" },
+        { day: 9, text: "大头照嘻嘻" },
+        { day: 9, text: "这是应援海报吗" },
+        { day: 9, text: "有粉丝说是纪录片？" },
+        { day: 25, text: "圣诞节喝点小酒" },
+        { day: 25, text: "又微醺了" },
+        { day: 25, text: "真的好帅" },
+        { day: 25, text: "有点男友视角哈哈哈哈" }
+        ]
+        },
+        2025: {
+        1: [
+        { day: 5, text: "滑雪照！" },
+        { day: 5, text: "朋友刚夸完你就摔了哈哈哈哈" }
+        ],
+        2: [
+
+        ],
+        3: [
+        { day: 18, text: "长发造型诶" }
+        ],
+        4: [
+        { day: 11, text: "那时的你也没想到这张照片会为一年多后拍摄提供灵感吧" }
+        ],
+        5: [
+        { day: 13, text: "飞去静冈啦" },
+        { day: 13, text: "去看Stray Kids演唱会啦" },
+        { day: 13, text: "被朋友拍下的背影" },
+        { day: 13, text: "等待吃饭中" },
+        { day: 13, text: "等车ing" },
+        { day: 13, text: "腿长两米" },
+        ],
+        6: [
+        { day: 19, text: "投入满腔热情拍摄的《竞选伙伴》将于今日12点在TVING上线。恳请大家多多关注" },
+        { day: 19, text: "姜载沅" },
+        { day: 19, text: "好大的头盔" },
+        { day: 19, text: "校霸哦" },
+        { day: 19, text: "在取景框内看到自己很开心吧" },
+        { day: 19, text: "好酷" },
+        { day: 19, text: "这个车真的帅，很适合你" },
+        { day: 19, text: "不是演校霸吗怎么还在卖萌" },
+        { day: 20, text: "很出圈的一个场景" },
+        { day: 20, text: "双眼皮好好看" },
+        { day: 20, text: "很开心" },
+        { day: 20, text: "又认识了好朋友" },
+        { day: 20, text: "这张图好可爱" },
+        { day: 20, text: "就这样捕捉镜头" },
+        { day: 20, text: "这张怎么不看镜头" },
+        { day: 20, text: "很认真哦" },
+        { day: 20, text: "冲呀！" },
+        { day: 21, text: "打戏哦" },
+        { day: 21, text: "依旧《竞选伙伴》" },
+        { day: 21, text: "满屏都是大长腿" },
+        { day: 22, text: "是《竞选伙伴》剧组合影吧" },
+        { day: 22, text: "好漂亮的手" },
+        { day: 22, text: "到底在看什么！" },
+        { day: 22, text: "像在听课一样" },
+        { day: 22, text: "很认真" },
+        { day: 22, text: "很开心吧" },
+        { day: 23, text: "剪刀手" },
+        { day: 23, text: "嘟嘟脸" },
+        { day: 23, text: "你好喜欢这种忧郁滤镜" }
+        ],
+        7: [
+        { day: 7, text: "照片由许宰武拍摄，一张日常咖啡馆随拍" },
+        { day: 8, text: "《竞选伙伴》" },
+        { day: 8, text: "好有氛围感" },
+        { day: 8, text: "双眼皮好看" },
+        { day: 8, text: "骑机车很酷嘛" },
+        { day: 8, text: "又是好朋友吗" },
+        { day: 8, text: "那时候就喜欢比小树杈呀" },
+        { day: 8, text: "整理发型中" },
+        { day: 8, text: "剧组大合照" },
+        { day: 13, text: "天气呀你识相点吧" },
+        { day: 13, text: "都要把我们允植热晕啦" },
+        { day: 22, text: "好羡慕三植！" },
+        { day: 22, text: "你说三植好可爱，但是你也好可爱" },
+        { day: 22, text: "和三植的大头照，可爱" },
+        { day: 23, text: "条纹衬衫" }
+        ],
+        8: [
+
+        ],
+        9: [
+
+        ],
+        10: [
+        { day: 9, text: "充实的假期，你做了什么呢" },
+        { day: 9, text: "多多自拍吧" },
+        { day: 9, text: "是回父母家了吗，还有小狗顺玉，这张好治愈" },
+        { day: 9, text: "腿长我已经说腻了" },
+        { day: 9, text: "两只萌物" }
+        ],
+        11: [
+        { day: 1, text: "好帅呀" },
+        { day: 1, text: "歪头这张和2026年机场那张特别像" },
+        { day: 1, text: "帅哥也逛优衣库吗" },
+        { day: 1, text: "背影也帅！" },
+        { day: 1, text: "衣服真的很有品味！" },
+        { day: 1, text: "给我帅晕了" },
+        { day: 9, text: "以后一起过冬天吧" },
+        { day: 9, text: "特别优越的身材" },
+        { day: 9, text: "歪头小狗" },
+        { day: 9, text: "手指好好看" },
+        { day: 9, text: "完全氛围感男神" },
+        { day: 9, text: "逐渐变成熟了哦" },
+        { day: 9, text: "好喜欢这组图" },
+        { day: 12, text: "你说谢谢大家，你会得到越来越多粉丝的爱的" },
+        { day: 27, text: "这段时间在健身吗" }
+        ],
+        12: [
+
+        ]
+        },
+        2026: {
+        1: [
+        { day: 15, text: "笑起来真的特别好看" },
+        { day: 15, text: "捉住一只探头小狗" },
+        { day: 23, text: "每次看到这个视频都在想要和你看首尔的初雪" },
+        { day: 23, text: "要注意保暖哦" },
+        { day: 23, text: "健身卓有成效嘛" },
+        { day: 23, text: "戴黑框眼镜好看" },
+        { day: 23, text: "以后每个冬天都一起过吧" }
+        ],
+        2: [
+        { day: 17, text: "新年快乐，多福多吉" },
+        { day: 17, text: "好会拍照呀" },
+        { day: 17, text: "喝的是可乐还是咖啡" },
+        { day: 17, text: "把自己照顾得很好" },
+        { day: 17, text: "可以做头像的程度" },
+        { day: 17, text: "好喜欢这组图" },
+        { day: 17, text: "好萌好萌" },
+        { day: 17, text: "逛展厅的背影" }
+        ],
+        3: [
+        { day: 9, text: "哈喽呀" },
+        { day: 9, text: "双开门嘻嘻" },
+        { day: 9, text: "好喜欢反戴帽子" },
+        { day: 9, text: "这个手真的好看！" }
+        ],
+        4: [
+        { day: 23, text: "拍摄中" },
+        { day: 23, text: "乖乖补妆中" },
+        { day: 23, text: "好乖呀" },
+        { day: 23, text: "-怎么这么帅啊-是减肥的力量啦。你本来就很帅！" }
+        ],
+        5: [
+        { day: 18, text: "这是收到格外多祝福的、20多岁最后一个生日，非常感谢所有送来祝福的大家" },
+        { day: 18, text: "永远都这么开心吧" },
+        { day: 18, text: "收到了这么多小蛋糕呀" },
+        { day: 18, text: "生日快乐，很遗憾以前的生日没能一起过" },
+        { day: 18, text: "这是临时凑的蜡烛" },
+        { day: 18, text: "以后每个生日都会很有多人陪你过" },
+        { day: 22, text: "收到印尼粉丝的礼物，好幸福呀" },
+        { day: 22, text: "你值得很多人的爱" }
+        ],
+        6: [
+        { day: 3, text: "跑步or散步" },
+        { day: 11, text: "《检察官的提案》海报，非常帅呢" },
+        { day: 21, text: "在看剧本吗" },
+        { day: 24, text: "你真的好喜欢小动物" },
+        { day: 25, text: "这张照片让我垂直入坑！" },
+        { day: 25, text: "半顺毛发型" },
+        { day: 28, text: "这么帅的造型竟然穿的是洞洞鞋吗！" },
+        { day: 28, text: "《检察官的提案》个人档案" },
+        { day: 29, text: "背景好像教室" },
+        { day: 29, text: "刚拍完哭戏眼睛红红，好惹人怜爱" },
+        { day: 30, text: "依旧美瞳滑片" },
+        { day: 30, text: "拍摄时真的好冷" },
+        { day: 30, text: "照镜子中" },
+        { day: 31, text: "收到了印尼粉丝的礼物，好开心呀" }
+        ],
+        7: [
+        { day: 2, text: "做选择题1vs2vs3，我都喜欢" },
+        { day: 13, text: "和三植的合照" },
+        { day: 14, text: "吃到好吃的就会开心吧" },
+        { day: 14, text: "吃烤肉中" },
+        { day: 16, text: "LOADING杂志" },
+        { day: 16, text: "LOSDING杂志" },
+        { day: 18, text: "这套造型很青春哦" },
+        { day: 24, text: "《检察官的提案》最后一场戏" },
+        { day: 24, text: "撒娇精！" },
+        { day: 24, text: "就这样卖萌！" },
+        { day: 25, text: "这件衣服好看！" },
+        { day: 25, text: "眼镜造型" },
+        { day: 26, text: "snackpaper代言人" },
+        { day: 26, text: "战损妆也是帅啊" },
+        { day: 26, text: "在想什么呢" },
+        { day: 27, text: "和小熊一样柔软" },
+        { day: 27, text: "好明媚" },
+        { day: 27, text: "可爱" },
+        { day: 29, text: "长得帅就是好啊，靠着灯管都能拍出氛围感" },
+        { day: 29, text: "在地下停车场也能出片的男人" }
+        ],
+        8: [
+        { day: 2, text: "你是一个本来就很好的人呀" },
+        { day: 2, text: "永远这样开心地笑吧" },
+        { day: 2, text: "怎么会这么可爱" },
+        { day: 3, text: "LOADING杂志拍摄" },
+        { day: 3, text: "你总是喜欢这样拍照哈哈" },
+        { day: 7, text: "木柯诗拍摄" },
+        { day: 3, text: "专心玩手机中" },
+        { day: 3, text: "这张又是不一样的气质" },
+        { day: 9, text: "澳门见面会，这是你的第一场粉丝见面会" },
+        { day: 9, text: "等会见" },
+        { day: 9, text: "澳门见面会结束啦" },
+        { day: 9, text: "舞台真的特别棒！" },
+        { day: 9, text: "白西装惊艳了很多人，还唱了《童话》，唱得特别好！" },
+        { day: 11, text: "挑选最喜欢的拍立得，最终5号获胜" },
+        { day: 14, text: "XCrossOver" },
+        { day: 14, text: "你们是我最大的力量" },
+        { day: 14, text: "在外面摸了别的猫三植要吃醋啦" },
+        { day: 19, text: "宣传SuperElle欣漾杂志，你说你有点紧张和担心，但是我们会一直支持你" },
+        { day: 21, text: "摇滚动物园代言" },
+        { day: 21, text: "这张照片好幸福" },
+        { day: 22, text: "很快就见面啦" },
+        { day: 22, text: "这个背影我看了好多遍" },
+        { day: 24, text: "欣漾杂志九月刊A版封面" },
+        { day: 24, text: "欣漾杂志九月刊B版封面" },
+        { day: 24, text: "很有质感的照片" },
+        { day: 24, text: "笑和不笑都很好看呢" },
+        { day: 24, text: "这张照片被做成表情包啦哈哈哈，好可爱" },
+        { day: 24, text: "因为有你我们也感到幸福" },
+        { day: 24, text: "好喜欢这组杂志图，你也付出了不少努力吧" },
+        { day: 25, text: "spes代言" },
+        { day: 25, text: "拍这组时的大长腿令人印象深刻" },
+        { day: 25, text: "这个宣传片的中文也说的很好！" },
+        { day: 29, text: "snackpaper代言" },
+        { day: 29, text: "曼谷粉丝见面会唱了《每时每刻》" },
+        { day: 29, text: "给粉丝比心" },
+        { day: 29, text: "这套西装也特别帅" },
+        { day: 29, text: "漫步在曼谷街头" },
+        { day: 29, text: "看起来很好吃的样子" },
+        { day: 29, text: "小孩子没有哭是因为你长得帅" },
+        { day: 29, text: "希望你玩得开心" },
+        { day: 31, text: "你在上海，这是我们离得最近的一次，但还是没有见到你" },
+        { day: 31, text: "在MINISO画廊" },
+        { day: 31, text: "作者送给你的画，有三植有顺玉，你很喜欢" },
+        { day: 31, text: "带走了好多东西呀" }
+        ],
+        9: [
+        { day: 2, text: "你在Fromm说这张照片像吸血鬼，哪里有这么帅的吸血鬼呀" },
+        { day: 2, text: "你发布了拍摄广告的花絮" },
+        { day: 3, text: "你让大家选最喜欢的照片，最受欢迎的是这张" },
+        { day: 3, text: "每张照片都很好看呀" },
+        { day: 3, text: "粉丝说不管什么样的衣服，穿在你身上就很好看" },
+        { day: 3, text: "每张照片的风格都不一样，但你总能很好拿捏" },
+        { day: 3, text: "这张也很帅！" },
+        { day: 3, text: "这组图真的每一张都完美" },
+        { day: 4, text: "你要准备去香港见面会啦" },
+        { day: 4, text: "虽然看过了，但我们都想再看一遍" },
+        { day: 4, text: "发布在快拍的这张也很明媚" },
+        { day: 4, text: "飞机准备起飞了，你说你会平安回来" },
+        { day: 5, text: "香港见面会第一天，吃了点心" },
+        { day: 5, text: "希望你没有不开心" },
+        { day: 5, text: "这天你为粉丝唱了《每时每刻》" },
+        { day: 5, text: "我只靠你就够了，不用多说，眼神里都明白" },
+        { day: 6, text: "香港见面会第二天" },
+        { day: 6, text: "你唱了粤语版的《老派约会之必要》，真的特别棒！" },
+        { day: 6, text: "木柯诗的唇釉在你的表现下真的很出彩" },
+        { day: 6, text: "这张照片简直天神下凡！" },
+        { day: 8, text: "这天你累得倒头就睡，大家都很担心你" },
+        { day: 8, text: "不用说对不起，我们只是担心你的安全" },
+        { day: 9, text: "我们都不能没有对方，那就走一辈子吧" },
+        { day: 9, text: "特别可爱！" }
+        ]
+        }
+        };
+
+        /* =====================================================
+        工具函数
+        ===================================================== */
+
+        /* 当前所处的年份 / 月份（用于返回上一级） */
+        let curYear = null;
+        let curMonth = null;
+
+        /* 渲染令牌：防止快速切换时旧请求覆盖新内容 */
+        let renderToken = 0;
+
+        /* 三级视图容器 */
+        const viewYears = document.getElementById('view-years');
+        const viewMonths = document.getElementById('view-months');
+        const viewPhotos = document.getElementById('view-photos');
+
+        /* 切换显示哪一级视图 */
+        function showView(name) {
+        viewYears.classList.toggle('hidden', name !== 'years');
+        viewMonths.classList.toggle('hidden', name !== 'months');
+        viewPhotos.classList.toggle('hidden', name !== 'photos');
+        }
+
+        /* 平滑回到页面顶部 */
+        function scrollTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* 某年某月共有多少天（用于自动分配日期） */
+        function daysInMonth(year, month) {
+        return new Date(year, month, 0).getDate();
+        }
+
+        /* 取出手动配置的照片数组（没有则返回空数组） */
+        function rawConfig(year, month) {
+        const y = PHOTO_DAYS[year];
+        return (y && y[month]) ? y[month] : [];
+        }
+
+        /* ---------- 自动识别：探测 images/年份-月份-序号.png ---------- */
+        /* detectDone：已探测完成的结果缓存（key -> 图片数量）
+        detectPending：正在进行中的探测 Promise，避免重复请求 */
+        const detectDone = new Map();
+        const detectPending = new Map();
+
+        function detectImageCount(year, month) {
+        const key = `${year}-${month}`;
+        if (detectDone.has(key)) return Promise.resolve(detectDone.get(key));
+        if (detectPending.has(key)) return detectPending.get(key);
+
+        const p = new Promise(resolve => {
+        let i = 0;
+        /* 递归探测：能加载就 i+1 继续，加载失败即认为到头了 */
+        const probe = () => {
+        const img = new Image();
+        img.onload = () => { i += 1; probe(); };
+        img.onerror = () => {
+        detectDone.set(key, i);
+        detectPending.delete(key);
+        resolve(i);
+        };
+        img.src = `images/${year}-${month}-${i}.png`;
+        };
+        probe();
+        });
+
+        detectPending.set(key, p);
+        return p;
+        }
+
+        /* ---------- 组装某个月的照片列表 ---------- */
+        async function getMonthPhotos(year, month) {
+        let raw = rawConfig(year, month);
+
+        /* 若没有手动配置且开启自动识别，则自动生成占位条目 */
+        if (raw.length === 0 && AUTO_DETECT) {
+        const n = await detectImageCount(year, month);
+        const maxDay = daysInMonth(year, month);
+        raw = [];
+        for (let i = 0; i < n; i++) {
+        /* 把 n 张图均匀分布在该月的日期上 */
+        const day = n <= 1
+        ? 1
+        : 1 + Math.round(i * (maxDay - 1) / (n - 1));
+        raw.push({ day: day, text: "" });
+        }
+        }
+
+        /* 统一转成 { day, text, src } 结构，图片按数组下标命名 */
+        return raw.map((entry, i) => {
+        const isObj = entry !== null && typeof entry === 'object';
+        const day = isObj ? entry.day : entry;
+        const text = (isObj && entry.text) ? entry.text : "";
+        return {
+        day: day,
+        text: text,
+        src: `images/${year}-${month}-${i}.png`
+        };
+        });
+        }
+
+        /* =====================================================
+        渲染：年份卡片
+        ===================================================== */
+        function renderYears() {
+        document.getElementById('yearsGrid').innerHTML = YEARS.map(y => `
+        <button class="year-card" data-year="${y}">
+        <div class="year-num">${y}</div>
+        <p class="year-sum">${YEAR_DATA[y].summary}</p>
+        </button>
+        `).join('');
+        }
+
+        /* =====================================================
+        渲染：月份卡片
+        ===================================================== */
+
+        /* 计算某月要显示的照片数量文案 */
+        function monthCountLabel(year, month) {
+        const raw = rawConfig(year, month);
+        if (raw.length) return `${raw.length} 张照片`;
+
+        if (AUTO_DETECT) {
+        const key = `${year}-${month}`;
+        if (detectDone.has(key)) return `${detectDone.get(key)} 张照片`;
+        return '自动识别…';       /* 尚未探测完，先占位 */
+        }
+        return '暂无照片';
+        }
+
+        function renderMonths(year) {
+        viewMonths.innerHTML = `
+        <div class="subnav">
+        <button class="back-btn" data-back="years">← 返回年份</button>
+        <span class="crumb">${year}</span>
+        </div>
+
+        <h2 class="view-title">${year} 年</h2>
+        <p class="view-sub">${YEAR_DATA[year].summary}</p>
+
+        <div class="grid months-grid">
+        ${MONTHS.map((name, i) => {
+        const m = i + 1;
+        return `
+        <button class="month-card" data-month="${m}">
+        <span class="month-num">${String(m).padStart(2, '0')}</span>
+        <span class="month-name">${name}</span>
+        <span class="month-count" data-count="${m}">${monthCountLabel(year, m)}</span>
+        </button>
+        `;
+        }).join('')}
+        </div>
+        `;
+
+        if (!AUTO_DETECT) return;
+
+        /* 对没有手动配置的月份做异步探测，完成后回填数量文案 */
+        MONTHS.forEach((_, i) => {
+        const m = i + 1;
+        if (rawConfig(year, m).length) return;
+        detectImageCount(year, m).then(n => {
+        const el = viewMonths.querySelector(`[data-count="${m}"]`);
+        if (el) el.textContent = `${n} 张照片`;
+        });
+        });
+        }
+
+        /* =====================================================
+        渲染：照片列表
+        ===================================================== */
+        async function renderPhotos(year, month) {
+        const token = ++renderToken;             /* 记录本次渲染令牌 */
+        const monthName = MONTHS[month - 1];
+
+        const photos = await getMonthPhotos(year, month);
+        if (token !== renderToken) return;       /* 已被更新的渲染取代，放弃本次结果 */
+
+        viewPhotos.innerHTML = `
+        <div class="subnav">
+        <button class="back-btn" data-back="months">← 返回月份</button>
+        <span class="crumb">${year} / ${monthName}</span>
+        </div>
+
+        <h2 class="view-title">${year} 年 ${monthName}</h2>
+        <p class="view-sub">共 ${photos.length} 张记录</p>
+
+        <div class="photo-list">
+        ${photos.length ? photos.map((p, i) => `
+        <figure class="photo-item">
+        <img src="${p.src}" alt="${year}年${month}月${p.day}日" loading="lazy">
+        <figcaption class="photo-meta">
+        <span class="idx">${String(i + 1).padStart(2, '0')} · ${month}月${p.day}日</span>
+        ${p.text ? `<p>${p.text}</p>` : ''}
+        </figcaption>
+        </figure>
+        `).join('') : `
+        <p class="view-sub">这个月还没有照片记录。</p>
+        `}
+        </div>
+        `;
+        }
+
+        /* =====================================================
+        顶部 Tab 切换（Kim / Yoon / Sik）
+        ===================================================== */
+        document.querySelectorAll('.tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+        const id = btn.dataset.tab;
+
+        /* 同步按钮与面板的激活状态 */
+        document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id));
+
+        scrollTop();
+        });
+        });
+
+        /* =====================================================
+        Yoon 模块的层级导航（年份 → 月份 → 照片）
+        使用事件委托，统一在 #yoon 上监听点击
+        ===================================================== */
+        document.getElementById('yoon').addEventListener('click', async e => {
+        /* 点击年份卡片：进入月份视图 */
+        const yearCard = e.target.closest('.year-card');
+        if (yearCard) {
+        curYear = Number(yearCard.dataset.year);
+        renderMonths(curYear);
+        showView('months');
+        scrollTop();
+        return;
+        }
+
+        /* 点击月份卡片：先显示“载入中…”，再异步渲染照片 */
+        const monthCard = e.target.closest('.month-card');
+        if (monthCard) {
+        curMonth = Number(monthCard.dataset.month);
+        viewPhotos.innerHTML = `
+        <div class="subnav">
+        <button class="back-btn" data-back="months">← 返回月份</button>
+        <span class="crumb">${curYear} / ${MONTHS[curMonth - 1]}</span>
+        </div>
+        <p class="view-sub">载入中…</p>
+        `;
+        showView('photos');
+        scrollTop();
+        renderPhotos(curYear, curMonth);
+        return;
+        }
+
+        /* 点击返回按钮：回到年份或月份视图 */
+        const backBtn = e.target.closest('[data-back]');
+        if (backBtn) {
+        if (backBtn.dataset.back === 'years') {
+        showView('years');
+        } else {
+        renderMonths(curYear);
+        showView('months');
+        }
+        scrollTop();
+        }
+        });
+
+        /* =====================================================
+        初始化：首次渲染年份卡片
+        ===================================================== */
+        renderYears();
+
+        /* =====================================================
+        点击冒心效果：在点击位置生成一颗浅蓝心，飘起后自动消失
+        ===================================================== */
+        const MAX_HEARTS = 36;               // 同屏最多心数，防止连点堆积
+
+        /* 心形路径（viewBox 32 × 29） */
+        const HEART_SVG = `
+        <svg viewBox="0 0 32 29" aria-hidden="true">
+        <path d="M16 28.6C16 28.6 .8 18.9 .8 9.9
+        .8 5 4.8 1 9.7 1
+        12.5 1 15 2.5 16 4.6
+        17 2.5 19.5 1 22.3 1
+        27.2 1 31.2 5 31.2 9.9
+        31.2 18.9 16 28.6 16 28.6Z"/>
+        </svg>`;
+
+        function spawnHeart(x, y) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-pop';
+
+        /* 随机大小 / 漂移 / 旋转 / 时长 / 色调，让每颗心都不一样 */
+        const size = 14 + Math.random() * 16;                    // 14 ~ 30px
+        const dx = (Math.random() - 0.5) * 70;                   // 左右漂移 ±35px
+        const rot = (Math.random() - 0.5) * 40;                  // 旋转 ±20°
+        const dur = 900 + Math.random() * 500;                   // 0.9 ~ 1.4s
+        const hue = 188 + Math.random() * 12;                    // 188 ~ 200
+        const sat = 82 + Math.random() * 12;                     // 82 ~ 94% 饱和度，更实
+        const light = 56 + Math.random() * 10;                   // 56 ~ 66% 明度，比之前深一档
+
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        heart.style.width = size + 'px';
+        heart.style.height = size + 'px';
+        heart.style.color = `hsl(${hue} ${sat}% ${light}%)`;
+        heart.style.setProperty('--dx', dx + 'px');
+        heart.style.setProperty('--rot', rot + 'deg');
+        heart.style.animationDuration = dur + 'ms';
+        heart.innerHTML = HEART_SVG;
+
+        document.body.appendChild(heart);
+
+        /* 超出上限就移除最早的那颗 */
+        const hearts = document.querySelectorAll('.heart-pop');
+        if (hearts.length > MAX_HEARTS) hearts[0].remove();
+
+        /* 动画结束即回收；再加一个兜底定时器防止 animationend 未触发 */
+        heart.addEventListener('animationend', () => heart.remove());
+        setTimeout(() => heart.remove(), dur + 300);
+        }
+
+        /* 全局监听点击：排除右键、以及带 data-no-heart 的元素 */
+        document.addEventListener('click', e => {
+        if (e.button !== 0) return;                              // 只响应左键
+        if (e.target.closest('[data-no-heart]')) return;         // 需要屏蔽的元素可加此属性
+        spawnHeart(e.clientX, e.clientY);
+        });
+
+    </script>
+
+</body>
+</html>
