@@ -744,7 +744,7 @@
                 box-shadow: inset 1px 0 0 rgba(255, 255, 255, .05);
             }
 
-        /* 轨道：纵向堆叠所有图片，靠 translateY 无限向上滚动 */
+        /* 轨道：纵向堆叠所有图片，单程向上滚动一遍 */
         .flash-track {
             position: absolute;
             top: 0;
@@ -753,17 +753,18 @@
             display: flex;
             flex-direction: column;
             will-change: transform;
-            animation: slideUp linear infinite;
+            /* 只播一次，播完停在末帧，不回绕 */
+            animation: slideUp linear forwards;
         }
 
-        /* 位移正好等于「一半轨道高度」，因为图片列表被复制了一份 */
+        /* 终点 = 最后一张刚好占满屏幕（不是 -100%，否则会滚空） */
         @keyframes slideUp {
             from {
-                transform: translate3d(0, 0, 0);
+                transform: translate3d(0, var(--start-y, 0vh), 0);
             }
 
             to {
-                transform: translate3d(0, -50%, 0);
+                transform: translate3d(0, calc(-100% + 100vh), 0);
             }
         }
 
@@ -985,6 +986,7 @@
         <div class="flash-col"></div>
         <div class="flash-col"></div>
         <div class="flash-col"></div>
+
         <!-- 梦核氛围层：色调 / 呼吸 / 颗粒（闪烁层由 JS 动态注入到每一列内部） -->
         <div class="flash-dream"></div>
         <div class="flash-breath"></div>
@@ -1116,7 +1118,7 @@
 
     <script>
         /* =====================================================
-        数据区（未做任何改动）
+        数据区
         ===================================================== */
         const MONTHS = ["一月", "二月", "三月", "四月", "五月", "六月",
         "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -1994,13 +1996,14 @@
         if (!root) return;
 
         /* ============ 配置区：改成你自己的图片路径 ============ */
-        // 三列，每列 8 张
+        // 三列，每列 6 张
         const COLS = [
         // 第一列
         [
         'images/2018-3-0.png',
         'images/2020-1-0.png',
-        'images/2021-8-2.png',
+        'images/2021-8-2.png',        
+        'images/2022-1-2.png',
         'images/2022-10-6.png',
         'images/2025-6-8.png',
         'images/2026-6-4.png'
@@ -2009,8 +2012,8 @@
         [
         'images/2018-4-0.png',
         'images/2020-4-0.png',
-        'images/2021-11-0.png',
         'images/2023-5-0.png',
+        'images/2023-11-0.png',
         'images/2025-6-24.png',
         'images/2026-8-23.png'
         ],
@@ -2018,21 +2021,20 @@
         [
         'images/2019-8-0.png',
         'images/2020-12-0.png',
-        'images/2022-1-2.png',
-        'images/2023-11-0.png',
         'images/2026-1-2.png',
         'images/2026-8-40.png'
         ]
         ];
 
-        /* 每列滚动一整个循环的时长（ms），越大越慢 */
-        const COL_SPEED = [26000, 30000, 28000];
+        /* 每列滚完全程的时长（ms），越大越慢 → 制造持续错位 */
+        const COL_SPEED = [20000, 23000, 25000];
 
-        /* 每列的启动延迟（ms），负值 = 动画从循环中途开始，制造错位感 */
-        const COL_DELAY = [-2000, -7000, -12000];
+        /* 每列起始纵向偏移（vh，负值 = 已经往上滚了一点点）
+           0 / -5 / -10 → 开场就有细错落，第 1 张依然基本完整可见 */
+        const COL_START = [0, -5, -10];
 
-        /* 开屏总展示时长（ms），到点自动淡出 */
-        const TOTAL_TIME = 22000;
+        /* 开屏总展示时长（ms）——要小于最快列的时长，否则那列会先停住 */
+        const TOTAL_TIME = 25000;
 
         /* true = 每次刷新都播 */
         const ONCE = true;
@@ -2066,22 +2068,21 @@
         timers.length = 0;
         }
 
-        /* 构建一列：把图片纵向堆叠成轨道，复制一份实现无缝循环 */
-        function buildCol(colEl, srcs, duration, delay) {
-        const track = document.createElement('div');
-        track.className = 'flash-track';
-        track.style.animationDuration = duration + 'ms';
-        if (delay) track.style.animationDelay = delay + 'ms';
+        /* 构建一列：图片纵向堆叠成轨道，只放一份，顺序播放不回头 */
+        function buildCol(colEl, srcs, duration, startVh) {
+            const track = document.createElement('div');
+            track.className = 'flash-track';
+            track.style.animationDuration = duration + 'ms';
+            track.style.setProperty('--start-y', (startVh || 0) + 'vh');
 
-        // 复制一份，使 -50% 的位移刚好等于整个列表高度
-        [...srcs, ...srcs].forEach(src => {
-        const slide = document.createElement('div');
-        slide.className = 'flash-slide';
-        slide.style.backgroundImage = `url("${src}")`;
-        track.appendChild(slide);
-        });
+            srcs.forEach(src => {
+                const slide = document.createElement('div');
+                slide.className = 'flash-slide';
+                slide.style.backgroundImage = `url("${src}")`;
+                track.appendChild(slide);
+            });
 
-        colEl.appendChild(track);
+            colEl.appendChild(track);
         }
 
         /* 为一列生成「长度固定、节奏随机」的闪烁关键帧 */
@@ -2154,12 +2155,12 @@
 
         document.documentElement.classList.add('flash-lock');
 
-        /* ★ 开屏动画开始 → 同步开始播放背景音乐 */
+        /* 开屏动画开始 → 同步开始播放背景音乐 */
         if (typeof window.__startBGM === 'function') window.__startBGM();
 
-        // 三列同时开始，但速度与相位不同 → 错落流动
+       // 三列同时开始，速度与起始偏移不同 → 自然错落，无静止等待
         cols.forEach((colEl, i) => {
-        buildCol(colEl, COLS[i], COL_SPEED[i], COL_DELAY[i]);
+            buildCol(colEl, COLS[i], COL_SPEED[i], COL_START[i]);
         });
 
         // 为每列注入随机闪烁层
