@@ -14,22 +14,21 @@
 
         /* ================= 主题变量 ================= */
         :root {
-            --bg: #0c0c0f; /* 页面底色 */
-            --line: rgba(160, 216, 239, 0.20); /* 主描边 */
-            --line-soft: rgba(255, 255, 255, 0.07); /* 弱描边 */
-            --gold: #7ec6e6; /* 主强调色（蓝） */
-            --gold-soft: #a0d8ef; /* 浅强调色 */
-            --text: #eae7e1; /* 正文文字 */
-            --muted: #8d8983; /* 次要文字 */
-            --radius: 16px; /* 统一圆角 */
+            --bg: #0c0c0f;
+            --line: rgba(160, 216, 239, 0.20);
+            --line-soft: rgba(255, 255, 255, 0.07);
+            --gold: #7ec6e6;
+            --gold-soft: #a0d8ef;
+            --text: #eae7e1;
+            --muted: #8d8983;
+            --radius: 16px;
         }
 
         html {
-            scroll-behavior: smooth; /* 锚点/滚动平滑 */
+            scroll-behavior: smooth;
         }
 
         body {
-            /* 多层径向渐变 + 底色，营造暗色氛围 */
             background: radial-gradient(900px 500px at 15% -5%, rgba(160,216,239,.12), transparent 60%), radial-gradient(800px 450px at 90% 5%, rgba(110,130,200,.07), transparent 60%), var(--bg);
             background-attachment: fixed;
             color: var(--text);
@@ -39,13 +38,12 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ---------- HEADER 顶部标题与导航 ---------- */
+        /* ---------- HEADER ---------- */
         .site-header {
             padding: 72px 24px 0;
             text-align: center;
         }
 
-        /* 小标题（ACTOR · 김윤식） */
         .eyebrow-top {
             font-size: 13px;
             letter-spacing: .42em;
@@ -54,7 +52,6 @@
             margin-bottom: 18px;
         }
 
-        /* 主标题：渐变文字（白 → 米金） */
         .site-title {
             font-family: Georgia, "Times New Roman", serif;
             font-weight: 400;
@@ -67,7 +64,6 @@
             color: transparent;
         }
 
-        /* 三个 Tab 组成的胶囊导航 */
         .tabs {
             display: inline-flex;
             gap: 4px;
@@ -96,24 +92,22 @@
                 color: var(--gold-soft);
             }
 
-            /* 选中态：渐变底色 + 阴影 */
             .tab.active {
                 color: #0a1e2a;
                 background: linear-gradient(180deg, var(--gold-soft), var(--gold));
                 box-shadow: 0 6px 20px rgba(160,216,239,.22);
             }
 
-        /* ---------- LAYOUT 主体布局 ---------- */
+        /* ---------- LAYOUT ---------- */
         main {
             max-width: 1080px;
             margin: 0 auto;
             padding: 56px 24px 110px;
         }
 
-        /* 面板：默认隐藏，由 tab 控制显示 */
         .panel {
             display: none;
-            animation: fadeUp .55s ease both; /* 出现时向上淡入 */
+            animation: fadeUp .55s ease both;
         }
 
             .panel.active {
@@ -132,12 +126,10 @@
             }
         }
 
-        /* 通用隐藏类（用于 Yoon 模块内部视图切换） */
         .hidden {
             display: none !important;
         }
 
-        /* 小标题统一样式 */
         .eyebrow {
             font-size: 13px;
             letter-spacing: .4em;
@@ -146,23 +138,22 @@
             margin-bottom: 14px;
         }
 
-        /* ---------- KIM 面板：人物主视觉 ---------- */
+        /* ---------- KIM ---------- */
         .kim-hero {
             display: grid;
-            grid-template-columns: 320px 1fr; /* 左头像 + 右文字 */
+            grid-template-columns: 320px 1fr;
             gap: 52px;
             align-items: center;
         }
 
-        /* 头像容器 */
         .portrait img {
             width: 100%;
-            aspect-ratio: 4 / 5; /* 固定 4:5 比例 */
+            aspect-ratio: 4 / 5;
             object-fit: cover;
             border-radius: var(--radius);
             display: block;
             border: 1px solid var(--line-soft);
-            background: linear-gradient(135deg, #1b1b21, #26262f); /* 图片未加载时的占位底色 */
+            background: linear-gradient(135deg, #1b1b21, #26262f);
         }
 
         .hero-text h2 {
@@ -173,7 +164,6 @@
             letter-spacing: .01em;
         }
 
-        /* 韩文/汉字名 */
         .kr {
             color: var(--muted);
             margin-top: 10px;
@@ -181,7 +171,6 @@
             font-size: 16px;
         }
 
-        /* 引言段落（左侧竖线） */
         .lede {
             margin-top: 28px;
             font-size: 19px;
@@ -191,11 +180,10 @@
             padding-left: 20px;
         }
 
-        /* 信息卡固定 3 列 × 2 行 */
         .facts {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1px; /* 用 1px 缝隙 + 底色做出分隔线效果 */
+            gap: 1px;
             background: var(--line-soft);
             border: 1px solid var(--line-soft);
             border-radius: var(--radius);
@@ -211,19 +199,18 @@
             gap: 4px;
         }
 
-            .fact .k { /* 字段名 */
+            .fact .k {
                 font-size: 13px;
                 letter-spacing: .22em;
                 color: var(--gold);
                 text-transform: uppercase;
             }
 
-            .fact .v { /* 字段值 */
+            .fact .v {
                 font-size: 17px;
                 color: #d6d2ca;
             }
 
-        /* 生平正文区块 */
         .bio {
             margin-top: 76px;
         }
@@ -247,7 +234,7 @@
                 margin-bottom: 16px;
             }
 
-        /* ---------- YOON 面板：时间轴 ---------- */
+        /* ---------- YOON ---------- */
         .view-head {
             margin-bottom: 40px;
         }
@@ -271,12 +258,10 @@
             gap: 16px;
         }
 
-        /* 年份卡片网格：自适应列数 */
         .years-grid {
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         }
 
-        /* 年份卡片（本身是 button） */
         .year-card {
             position: relative;
             text-align: left;
@@ -291,7 +276,7 @@
         }
 
             .year-card:hover {
-                transform: translateY(-5px); /* 悬停轻微上浮 */
+                transform: translateY(-5px);
                 border-color: rgba(160,216,239,.60);
                 background: linear-gradient(180deg, rgba(160,216,239,.12), rgba(255,255,255,.01));
             }
@@ -310,7 +295,6 @@
             line-height: 1.7;
         }
 
-        /* 返回按钮 + 面包屑所在的一行 */
         .subnav {
             display: flex;
             align-items: center;
@@ -344,7 +328,6 @@
             text-transform: uppercase;
         }
 
-        /* 月份卡片网格 */
         .months-grid {
             grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
             gap: 12px;
@@ -373,29 +356,27 @@
                 background: rgba(160,216,239,.09);
             }
 
-        .month-num { /* 01 ~ 12 */
+        .month-num {
             font-family: Georgia, serif;
             font-size: 15px;
             letter-spacing: .24em;
             color: var(--gold);
         }
 
-        .month-name { /* 一月 ~ 十二月 */
+        .month-name {
             font-size: 18px;
             color: #ddd9d1;
         }
 
-        .month-count { /* 照片数量提示 */
+        .month-count {
             font-size: 14px;
             color: var(--muted);
         }
 
-        /* 照片列表 */
         .photo-list {
             margin-top: 40px;
         }
 
-        /* 单条照片：左图右文字 */
         .photo-item {
             display: grid;
             grid-template-columns: 1.15fr .85fr;
@@ -405,7 +386,7 @@
             border-top: 1px solid var(--line-soft);
         }
 
-            .photo-item:first-child { /* 第一条不要上边线 */
+            .photo-item:first-child {
                 border-top: 0;
                 padding-top: 0;
             }
@@ -413,7 +394,7 @@
             .photo-item img {
                 width: 100%;
                 height: auto;
-                max-height: 78vh; /* 防止长图撑爆屏幕 */
+                max-height: 78vh;
                 object-fit: contain;
                 border-radius: 12px;
                 display: block;
@@ -424,24 +405,24 @@
             }
 
             .photo-item:hover img {
-                transform: scale(1.015); /* 悬停轻微放大 */
+                transform: scale(1.015);
             }
 
-        .photo-meta .idx { /* 序号 + 日期 */
+        .photo-meta .idx {
             font-family: Georgia, serif;
             font-size: 15px;
             letter-spacing: .3em;
             color: var(--gold);
         }
 
-        .photo-meta p { /* 照片描述 */
+        .photo-meta p {
             margin-top: 14px;
             color: #c3bfb7;
             font-size: 17px;
             line-height: 1.9;
         }
 
-        /* ---------- SIK 面板：联系方式 ---------- */
+        /* ---------- SIK ---------- */
         .sik-grid {
             display: grid;
             grid-template-columns: .9fr 1.1fr;
@@ -453,7 +434,7 @@
             margin-bottom: 30px;
         }
 
-            .contact-block .k { /* 联系方式标签 */
+            .contact-block .k {
                 font-size: 13px;
                 letter-spacing: .24em;
                 color: var(--gold);
@@ -462,7 +443,7 @@
                 margin-bottom: 6px;
             }
 
-            .contact-block .v { /* 联系方式内容 */
+            .contact-block .v {
                 font-size: 17.5px;
                 color: #d3cfc7;
             }
@@ -479,7 +460,7 @@
                         border-color: var(--gold);
                     }
 
-        /* ---------- 表单样式（当前页面未使用，保留备用） ---------- */
+        /* ---------- 表单 ---------- */
         .form-row {
             margin-bottom: 18px;
         }
@@ -513,7 +494,6 @@
                 min-height: 130px;
             }
 
-                /* 聚焦高亮 */
                 .form-row input:focus,
                 .form-row select:focus,
                 .form-row textarea:focus {
@@ -544,7 +524,6 @@
                 transform: translateY(-2px);
             }
 
-        /* 提交后的提示文字（默认透明，加 .show 才出现） */
         .form-note {
             margin-top: 16px;
             font-size: 15.5px;
@@ -559,26 +538,25 @@
                 transform: none;
             }
 
-        /* ---------- 点击冒心效果 ---------- */
+        /* ---------- 点击冒心 ---------- */
         .heart-pop {
-            position: fixed; /* 用 fixed，配合 clientX/clientY 定位到点击点 */
-            pointer-events: none; /* 不拦截鼠标事件，避免影响原有交互 */
+            position: fixed;
+            pointer-events: none;
             z-index: 9999;
-            color: var(--gold-soft); /* 默认浅蓝，JS 会覆盖成随机色 */
+            color: var(--gold-soft);
             transform: translate(-50%, -50%);
             animation: heartPop 1.1s cubic-bezier(.22, .61, .36, 1) forwards;
             will-change: transform, opacity;
         }
 
-        .heart-pop svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-            fill: currentColor; /* 跟随 .heart-pop 的 color */
-            filter: drop-shadow(0 0 6px rgba(160, 216, 239, .85));
-        }
+            .heart-pop svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+                fill: currentColor;
+                filter: drop-shadow(0 0 6px rgba(160, 216, 239, .85));
+            }
 
-        /* 心形飘起 → 轻微放大 → 淡出并上浮 */
         @keyframes heartPop {
             0% {
                 opacity: 0;
@@ -600,27 +578,56 @@
             }
         }
 
-        /* 尊重系统“减少动态效果”偏好：只淡出不飘动 */
-        @media (prefers-reduced-motion: reduce) {
-            @keyframes heartPop {
-                0% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(.8);
-                }
-
-                30% {
-                    opacity: 1;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-
-                100% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-            }
+        /* ---------- 背景音乐开关 ---------- */
+        .bgm-toggle {
+            position: fixed;
+            left: 22px;
+            bottom: 22px;
+            z-index: 10001;
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: rgba(10, 12, 18, .58);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            color: var(--gold-soft);
+            cursor: pointer;
+            transition: transform .3s, border-color .3s, background .3s, color .3s, opacity .3s;
         }
 
-        /* ---------- FOOTER 页脚 ---------- */
+            .bgm-toggle:hover {
+                transform: translateY(-2px);
+                border-color: rgba(160, 216, 239, .60);
+                background: rgba(160, 216, 239, .14);
+            }
+
+            .bgm-toggle svg {
+                width: 20px;
+                height: 20px;
+                display: block;
+            }
+
+            /* 默认显示"播放"图标，播放中切换为"暂停"图标 */
+            .bgm-toggle .icon-pause {
+                display: none;
+            }
+
+            .bgm-toggle.is-playing .icon-play {
+                display: none;
+            }
+
+            .bgm-toggle.is-playing .icon-pause {
+                display: block;
+            }
+
+            .bgm-toggle.is-off {
+                color: var(--muted);
+            }
+
+        /* ---------- FOOTER ---------- */
         footer {
             text-align: center;
             padding: 40px 24px 60px;
@@ -639,10 +646,10 @@
                 color: #4a4844;
             }
 
-        /* ---------- 响应式：平板（≤860px） ---------- */
+        /* ---------- 响应式 ---------- */
         @media (max-width: 860px) {
             .kim-hero {
-                grid-template-columns: 1fr; /* 头像与文字改为上下排列 */
+                grid-template-columns: 1fr;
                 gap: 34px;
             }
 
@@ -656,7 +663,7 @@
             }
 
             .photo-item {
-                grid-template-columns: 1fr; /* 照片与文字改为上下排列 */
+                grid-template-columns: 1fr;
                 gap: 18px;
             }
 
@@ -665,7 +672,7 @@
                 }
 
             .facts {
-                grid-template-columns: repeat(2, 1fr); /* 信息卡 3 列 → 2 列 */
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .photo-item img {
@@ -673,7 +680,6 @@
             }
         }
 
-        /* ---------- 响应式：手机（≤600px） ---------- */
         @media (max-width: 600px) {
             .site-header {
                 padding-top: 48px;
@@ -690,7 +696,7 @@
             }
 
             .facts {
-                grid-template-columns: 1fr; /* 信息卡 2 列 → 1 列 */
+                grid-template-columns: 1fr;
             }
 
             .months-grid {
@@ -700,10 +706,291 @@
             .photo-item img {
                 max-height: 62vh;
             }
+
+            .bgm-toggle {
+                width: 40px;
+                height: 40px;
+                left: 14px;
+                bottom: 14px;
+            }
+        }
+
+        /* ================= 开屏：三列持续滚动 · 梦核版 ================= */
+        .flash {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: #05050a;
+            overflow: hidden;
+            opacity: 1;
+            /* 淡出更慢，收尾更缥缈 */
+            transition: opacity 1.2s ease;
+        }
+
+            .flash.done {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+        /* 每一列就是一个裁剪窗口 */
+        .flash-col {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .flash-col + .flash-col {
+                box-shadow: inset 1px 0 0 rgba(255, 255, 255, .05);
+            }
+
+        /* 轨道：纵向堆叠所有图片，靠 translateY 无限向上滚动 */
+        .flash-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            will-change: transform;
+            animation: slideUp linear infinite;
+        }
+
+        /* 位移正好等于「一半轨道高度」，因为图片列表被复制了一份 */
+        @keyframes slideUp {
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+
+            to {
+                transform: translate3d(0, -50%, 0);
+            }
+        }
+
+        /* 每一张图：占满一列高度，梦核调色 */
+        .flash-slide {
+            width: 100%;
+            height: 100vh;
+            flex: 0 0 auto;
+            background-size: cover;
+            background-position: center;
+            filter: saturate(.68) contrast(.96) brightness(.88) hue-rotate(-6deg);
+        }
+
+        /* ---- 梦核色调层：粉 / 紫 / 青柔光缓慢流动 ---- */
+        .flash-dream {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: .5;
+            background: radial-gradient(120% 85% at 16% 10%, rgba(255, 122, 196, .34), transparent 60%), radial-gradient(115% 85% at 86% 84%, rgba(132, 110, 255, .36), transparent 60%), radial-gradient(95% 70% at 50% 48%, rgba(102, 232, 255, .20), transparent 64%);
+            animation: dreamShift 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes dreamShift {
+            0% {
+                transform: scale(1) translate3d(0, 0, 0);
+                opacity: .38;
+            }
+
+            50% {
+                opacity: .58;
+            }
+
+            100% {
+                transform: scale(1.14) translate3d(-1.5%, -2%, 0);
+                opacity: .46;
+            }
+        }
+
+        /* ---- 呼吸层：整块画面明暗起伏（柔和版） ---- */
+        .flash-breath {
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            background: radial-gradient(80% 70% at 50% 40%, rgba(210, 170, 255, .55), rgba(255, 190, 230, .24) 50%, transparent 82%);
+            opacity: .35;
+            animation: softBreath 7.5s ease-in-out infinite;
+        }
+
+        @keyframes softBreath {
+            0%, 100% {
+                opacity: .12;
+            }
+
+            50% {
+                opacity: .50;
+            }
+        }
+
+        /* ---- 每列独立的闪烁层：颜色基调各不相同 ---- */
+        .flash-col-flicker {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            z-index: 7;
+            opacity: 0; /* 初始透明，由 JS 动画接管 */
+            will-change: opacity;
+        }
+
+        /* 三列各给一点不同的色偏，闪起来层次不同 */
+        .flash-col:nth-of-type(1) .flash-col-flicker {
+            background: rgba(255, 200, 235, .55);
+        }
+
+        .flash-col:nth-of-type(2) .flash-col-flicker {
+            background: rgba(180, 225, 255, .55);
+        }
+
+        .flash-col:nth-of-type(3) .flash-col-flicker {
+            background: rgba(205, 195, 255, .55);
+        }
+
+        /* ---- 颗粒层：老胶片噪点 ---- */
+        .flash-grain {
+            position: absolute;
+            inset: -60%;
+            z-index: 8;
+            pointer-events: none;
+            opacity: .13;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            animation: grainJitter .7s steps(1, end) infinite;
+        }
+
+        @keyframes grainJitter {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            25% {
+                transform: translate3d(-2%, 1.5%, 0);
+            }
+
+            50% {
+                transform: translate3d(1.5%, -2%, 0);
+            }
+
+            75% {
+                transform: translate3d(-1%, -1%, 0);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        /* ---- 上下渐隐遮罩（压在最上层） ---- */
+        .flash::before,
+        .flash::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 16%;
+            pointer-events: none;
+            z-index: 9;
+        }
+
+        .flash::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(5, 5, 10, .92), transparent);
+        }
+
+        .flash::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(5, 5, 10, .92), transparent);
+        }
+
+        .flash-skip {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
+            z-index: 20;
+            font-family: inherit;
+            font-size: 12px;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .5);
+            background: transparent;
+            border: 0;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: color .3s;
+        }
+
+            .flash-skip:hover {
+                color: #a0d8ef;
+            }
+
+        /* 播放期间锁定滚动 */
+        html.flash-lock {
+            overflow: hidden;
+        }
+
+        /* 减少动态效果：全部静止，只保留静态梦核色调 */
+        @media (prefers-reduced-motion: reduce) {
+            .flash-track,
+            .flash-dream,
+            .flash-breath,
+            .flash-col-flicker,
+            .flash-grain {
+                animation: none !important;
+            }
+
+            .flash-col-flicker {
+                opacity: 0 !important;
+            }
+
+            .flash-slide {
+                filter: saturate(.68) contrast(.96) brightness(.88) hue-rotate(-6deg);
+            }
+
+            .flash-dream {
+                opacity: .40;
+            }
+
+            .flash-breath {
+                opacity: .25;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- ================= 背景音乐 =================
+         把音乐文件放到 audio/bgm.mp3（或改成你自己的路径）
+         loop = 循环播放，preload = 提前加载
+    ============================================== -->
+    <audio id="bgm" src="audio/bgm.mp3" loop preload="auto" playsinline></audio>
+
+    <!-- 音乐开关（左下角） -->
+    <button id="bgmToggle" class="bgm-toggle is-off" type="button" aria-label="背景音乐开关" data-no-heart>
+        <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.2v13.6L19 12 8 5.2z" fill="currentColor" />
+        </svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 5h3.2v14H7zM13.8 5H17v14h-3.2z" fill="currentColor" />
+        </svg>
+    </button>
+
+    <!-- ================= 开屏：三列持续滚动 · 梦核 ================= -->
+    <div id="flash" class="flash" data-no-heart>
+        <div class="flash-col"></div>
+        <div class="flash-col"></div>
+        <div class="flash-col"></div>
+        <!-- 梦核氛围层：色调 / 呼吸 / 颗粒（闪烁层由 JS 动态注入到每一列内部） -->
+        <div class="flash-dream"></div>
+        <div class="flash-breath"></div>
+        <div class="flash-grain"></div>
+        <button class="flash-skip" id="flashSkip" type="button">Skip</button>
+    </div>
 
     <!-- ================= 顶部：标题 + 三个 Tab ================= -->
     <header class="site-header">
@@ -719,9 +1006,8 @@
 
     <main>
 
-        <!-- ================= KIM：人物简介 ================= -->
+        <!-- ================= KIM ================= -->
         <section id="kim" class="panel active">
-            <!-- 主视觉：左头像 + 右文字 -->
             <div class="kim-hero">
                 <div class="portrait">
                     <img src="images/portrait.png" alt="Kim Yoonsik 肖像">
@@ -734,7 +1020,6 @@
                 </div>
             </div>
 
-            <!-- 基本信息卡（3×2） -->
             <div class="facts">
                 <div class="fact"><span class="k">出生</span><span class="v">1998.05.18 · 全州</span></div>
                 <div class="fact"><span class="k">身高</span><span class="v">187cm</span></div>
@@ -744,7 +1029,6 @@
                 <div class="fact"><span class="k">毕业院校</span><span class="v">东国大学</span></div>
             </div>
 
-            <!-- 生平与经历 -->
             <article class="bio">
                 <h3>关于他</h3>
                 <p>
@@ -784,9 +1068,8 @@
             </article>
         </section>
 
-        <!-- ================= YOON：时间轴（年份 → 月份 → 照片） ================= -->
+        <!-- ================= YOON ================= -->
         <section id="yoon" class="panel">
-            <!-- 第一级视图：年份列表（由 JS 渲染） -->
             <div id="view-years" class="yoon-view">
                 <div class="view-head">
                     <p class="eyebrow">Timeline</p>
@@ -796,14 +1079,11 @@
                 <div class="grid years-grid" id="yearsGrid"></div>
             </div>
 
-            <!-- 第二级视图：月份列表（由 JS 填充） -->
             <div id="view-months" class="yoon-view hidden"></div>
-
-            <!-- 第三级视图：照片列表（由 JS 填充） -->
             <div id="view-photos" class="yoon-view hidden"></div>
         </section>
 
-        <!-- ================= SIK：联系方式 ================= -->
+        <!-- ================= SIK ================= -->
         <section id="sik" class="panel">
             <div class="view-head">
                 <p class="eyebrow">Contact</p>
@@ -815,7 +1095,6 @@
                 </p>
             </div>
 
-            <!-- 联系方式 -->
             <div class="sik-info">
                 <div class="contact-block">
                     <span class="k">邮箱</span>
@@ -830,7 +1109,6 @@
 
     </main>
 
-    <!-- 页脚 -->
     <footer>
         <div>The Journey of Yoonsik · 2018 — 2026</div>
         <div class="credit">Created by lullaby·素材来源于网络</div>
@@ -838,22 +1116,15 @@
 
     <script>
         /* =====================================================
-        数据区
+        数据区（未做任何改动）
         ===================================================== */
-
-        /* 月份中文名，下标 0 = 一月 */
         const MONTHS = ["一月", "二月", "三月", "四月", "五月", "六月",
         "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
-        /* 需要展示的年份 */
         const YEARS = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
-        /* 是否开启图片自动探测：
-        当某个月没有在 PHOTO_DAYS 中配置时，
-        自动按 images/年-月-序号.png 依次探测，直到 404 为止 */
         const AUTO_DETECT = true;
 
-        /* 每年的年度概述（显示在年份卡片与月份页标题下） */
         const YEAR_DATA = {
         2018: { summary: "从校园走向舞台，所有的第一次都发生在这年。" },
         2019: { summary: "在小剧场与短片之间来回穿梭，哪怕出场时间很短，也会反复打磨演技。" },
@@ -866,20 +1137,10 @@
         2026: { summary: "长久以来的坚持得到回报，这个夏天终于迎来了自己的闪耀时刻。" }
         };
 
-        /* =====================================================
-        照片配置
-        结构：PHOTO_DAYS[年][月] = [ { day: 日, text: "描述" }, ... ]
-        数组下标 i 决定图片文件名：images/年-月-i.png
-        某月为 [] 时，若 AUTO_DETECT 为 true，则走自动探测
-        ===================================================== */
         const PHOTO_DAYS = {
         2018: {
-        1: [
-        { day: 1, text: "不知道这个AC众星是什么时候的，暂且放在这里吧" }
-        ],
-        2: [
-        { day: 15, text: "农历新年祝福" }
-        ],
+        1: [ { day: 1, text: "不知道这个AC众星是什么时候的，暂且放在这里吧" } ],
+        2: [ { day: 15, text: "农历新年祝福" } ],
         3: [
         { day: 21, text: "其实这是2017年的视频，但是我没有做17年的，只好放在这里" },
         { day: 21, text: "那时候的fighting和笑容都和现在很像呢，你没有变" }
@@ -890,135 +1151,49 @@
         { day: 14, text: "网络剧《高中日记》剧中" },
         { day: 14, text: "网络剧《高中日记》剧中" }
         ],
-        5: [
-
-        ],
-        6: [
-
-        ],
-        7: [
-
-        ],
+        5: [], 6: [], 7: [],
         8: [
         { day: 14, text: "《恋爱的干预》剧本围读" },
         { day: 14, text: "《恋爱的干预》剧本围读" },
         { day: 14, text: "《恋爱的干预》剧本围读" }
         ],
-        9: [
-
-        ],
-        10: [
-
-        ],
-        11: [
-
-        ],
-        12: [
-
-        ]
+        9: [], 10: [], 11: [], 12: []
         },
         2019: {
-        1: [
-
-        ],
-        2: [
-
-        ],
-        3: [
-
-        ],
-        4: [
-
-        ],
-        5: [
-
-        ],
-        6: [
-
-        ],
-        7: [
-
-        ],
-        8: [
-        { day: 9, text: "参加Mnet《The Call2》" }
-        ],
+        1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [],
+        8: [ { day: 9, text: "参加Mnet《The Call2》" } ],
         9: [
         { day: 10, text: "《Memory of Junuary》" },
         { day: 10, text: "《Memory of Junuary》" },
         { day: 10, text: "《Memory of Junuary》" },
         { day: 17, text: "vogue" }
         ],
-        10: [
-        { day: 16, text: "Jeju airport" }
-        ],
-        11: [
-
-        ],
-        12: [
-
-        ]
+        10: [ { day: 16, text: "Jeju airport" } ],
+        11: [], 12: []
         },
         2020: {
-        1: [
-        { day: 11, text: "好欧巴的感觉" }
-        ],
+        1: [ { day: 11, text: "好欧巴的感觉" } ],
         2: [
         { day: 1, text: "VOGUE" },
         { day: 6, text: "欧巴忧郁时刻" },
         { day: 6, text: "换成黑白的更忧郁了呢" }
         ],
-        3: [
-
-        ],
+        3: [],
         4: [
         { day: 7, text: "很好看的帽子" },
         { day: 7, text: "其实动图更好看呢" }
         ],
-        5: [
-
-        ],
-        6: [
-
-        ],
-        7: [
-
-        ],
-        8: [
-
-        ],
-        9: [
-
-        ],
-        10: [
-        { day: 13, text: "时隔5年，再次相见。" }
-        ],
-        11: [
-
-        ],
+        5: [], 6: [], 7: [], 8: [], 9: [],
+        10: [ { day: 13, text: "时隔5年，再次相见。" } ],
+        11: [],
         12: [
         { day: 25, text: "圣诞节直播，你说粉丝见面会只要30人就够了" },
         { day: 31, text: "新年快乐" }
         ]
         },
         2021: {
-        1: [
-        { day: 15, text: "好稚嫩哦" }
-        ],
-        2: [
-
-        ],
-        3: [
-
-        ],
-        4: [
-
-        ],
-        5: [
-
-        ],
-        6: [
-
-        ],
+        1: [ { day: 15, text: "好稚嫩哦" } ],
+        2: [], 3: [], 4: [], 5: [], 6: [],
         7: [
         { day: 8, text: "近一个月，你收到了很多礼物" },
         { day: 8, text: "从那么早之前，你就说你要努力成为能为大家展现更好面貌的演员" },
@@ -1032,9 +1207,7 @@
         { day: 26, text: "《机智的医生生活2》中的实习医生,这部剧真的很火呢" },
         { day: 26, text: "努力生活的允植啊" }
         ],
-        9: [
-
-        ],
+        9: [],
         10: [
         { day: 14, text: "ins潮男又上线了" },
         { day: 14, text: "依旧拖鞋爱好者" }
@@ -1088,11 +1261,9 @@
         ],
         5: [
         { day: 7, text: "潮男来的" },
-        { day: 7, text: "你的衣服都好有品味！" },
+        { day: 7, text: "你的衣服都好有品味！" }
         ],
-        6: [
-
-        ],
+        6: [],
         7: [
         { day: 16, text: "和Endi的《提高音量》终场直播" },
         { day: 16, text: "好帅嘻嘻" },
@@ -1101,7 +1272,7 @@
         8: [
         { day: 4, text: "和Jettie、Coco姐姐一起的《只有你觉得没问题的恋爱》" },
         { day: 4, text: "又认识了新朋友呢" },
-        { day: 11, text: "和Yedi、Coco姐姐一起的《提高音量》！" },
+        { day: 11, text: "和Yedi、Coco姐姐一起的《提高音量》！" }
         ],
         9: [
         { day: 12, text: "你这组图的最后一张吓到我啦" },
@@ -1119,33 +1290,19 @@
         { day: 8, text: "又卖萌" },
         { day: 23, text: "这里真的好可爱！" }
         ],
-        11: [
-
-        ],
-        12: [
-        { day: 24, text: "平安夜，戴了针织帽哦" }
-        ]
+        11: [],
+        12: [ { day: 24, text: "平安夜，戴了针织帽哦" } ]
         },
         2023: {
-        1: [
-        { day: 24, text: "在做咖啡吗" }
-        ],
-        2: [
-
-        ],
-        3: [
-        { day: 24, text: "又在24号发ins" }
-        ],
-        4: [
-        { day: 24, text: "成为月更博主了" }
-        ],
+        1: [ { day: 24, text: "在做咖啡吗" } ],
+        2: [],
+        3: [ { day: 24, text: "又在24号发ins" } ],
+        4: [ { day: 24, text: "成为月更博主了" } ],
         5: [
         { day: 18, text: "生日快乐！" },
         { day: 18, text: "感谢送上祝福的各位" }
         ],
-        6: [
-
-        ],
+        6: [],
         7: [
         { day: 21, text: "好帅啊" },
         { day: 21, text: "灿烂地笑吧" },
@@ -1160,55 +1317,27 @@
         { day: 26, text: "这件衣服也好看" },
         { day: 26, text: "又吃得嘴巴鼓鼓" }
         ],
-        10: [
-        { day: 26, text: "太帅了真的" }
-        ],
+        10: [ { day: 26, text: "太帅了真的" } ],
         11: [
         { day: 5, text: "和小狗顺玉" },
         { day: 21, text: "真的好白呀" }
         ],
-        12: [
-
-        ]
+        12: []
         },
         2024: {
-        1: [
-
-        ],
-        2: [
-
-        ],
-        3: [
-
-        ],
+        1: [], 2: [], 3: [],
         4: [
         { day: 2, text: "好有艺术感的车" },
         { day: 2, text: "这么冷为什么吃冰激凌！" }
         ],
-        5: [
-
-        ],
-        6: [
-
-        ],
-        7: [
-
-        ],
-        8: [
-
-        ],
+        5: [], 6: [], 7: [], 8: [],
         9: [
         { day: 20, text: "长这么帅还有什么烦恼吗" },
         { day: 20, text: "粉丝说这组图很有故事感哦" },
         { day: 25, text: "你真的很喜欢格子衬衫哈哈哈哈" },
         { day: 25, text: "又鼓着嘴卖萌！" }
         ],
-        10: [
-
-        ],
-        11: [
-
-        ],
+        10: [], 11: [],
         12: [
         { day: 8, text: "冬天啦" },
         { day: 8, text: "穿衣服真的很有品啊！" },
@@ -1228,22 +1357,16 @@
         { day: 5, text: "滑雪照！" },
         { day: 5, text: "朋友刚夸完你就摔了哈哈哈哈" }
         ],
-        2: [
-
-        ],
-        3: [
-        { day: 18, text: "长发造型诶" }
-        ],
-        4: [
-        { day: 11, text: "那时的你也没想到这张照片会为一年多后拍摄提供灵感吧" }
-        ],
+        2: [],
+        3: [ { day: 18, text: "长发造型诶" } ],
+        4: [ { day: 11, text: "那时的你也没想到这张照片会为一年多后拍摄提供灵感吧" } ],
         5: [
         { day: 13, text: "飞去静冈啦" },
         { day: 13, text: "去看Stray Kids演唱会啦" },
         { day: 13, text: "被朋友拍下的背影" },
         { day: 13, text: "等待吃饭中" },
         { day: 13, text: "等车ing" },
-        { day: 13, text: "腿长两米" },
+        { day: 13, text: "腿长两米" }
         ],
         6: [
         { day: 19, text: "投入满腔热情拍摄的《竞选伙伴》将于今日12点在TVING上线。恳请大家多多关注" },
@@ -1293,12 +1416,7 @@
         { day: 22, text: "和三植的大头照，可爱" },
         { day: 23, text: "条纹衬衫" }
         ],
-        8: [
-
-        ],
-        9: [
-
-        ],
+        8: [], 9: [],
         10: [
         { day: 9, text: "充实的假期，你做了什么呢" },
         { day: 9, text: "多多自拍吧" },
@@ -1323,9 +1441,7 @@
         { day: 12, text: "你说谢谢大家，你会得到越来越多粉丝的爱的" },
         { day: 27, text: "这段时间在健身吗" }
         ],
-        12: [
-
-        ]
+        12: []
         },
         2026: {
         1: [
@@ -1485,45 +1601,33 @@
         /* =====================================================
         工具函数
         ===================================================== */
-
-        /* 当前所处的年份 / 月份（用于返回上一级） */
         let curYear = null;
         let curMonth = null;
-
-        /* 渲染令牌：防止快速切换时旧请求覆盖新内容 */
         let renderToken = 0;
 
-        /* 三级视图容器 */
         const viewYears = document.getElementById('view-years');
         const viewMonths = document.getElementById('view-months');
         const viewPhotos = document.getElementById('view-photos');
 
-        /* 切换显示哪一级视图 */
         function showView(name) {
         viewYears.classList.toggle('hidden', name !== 'years');
         viewMonths.classList.toggle('hidden', name !== 'months');
         viewPhotos.classList.toggle('hidden', name !== 'photos');
         }
 
-        /* 平滑回到页面顶部 */
         function scrollTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* 某年某月共有多少天（用于自动分配日期） */
         function daysInMonth(year, month) {
         return new Date(year, month, 0).getDate();
         }
 
-        /* 取出手动配置的照片数组（没有则返回空数组） */
         function rawConfig(year, month) {
         const y = PHOTO_DAYS[year];
         return (y && y[month]) ? y[month] : [];
         }
 
-        /* ---------- 自动识别：探测 images/年份-月份-序号.png ---------- */
-        /* detectDone：已探测完成的结果缓存（key -> 图片数量）
-        detectPending：正在进行中的探测 Promise，避免重复请求 */
         const detectDone = new Map();
         const detectPending = new Map();
 
@@ -1534,7 +1638,6 @@
 
         const p = new Promise(resolve => {
         let i = 0;
-        /* 递归探测：能加载就 i+1 继续，加载失败即认为到头了 */
         const probe = () => {
         const img = new Image();
         img.onload = () => { i += 1; probe(); };
@@ -1552,17 +1655,14 @@
         return p;
         }
 
-        /* ---------- 组装某个月的照片列表 ---------- */
         async function getMonthPhotos(year, month) {
         let raw = rawConfig(year, month);
 
-        /* 若没有手动配置且开启自动识别，则自动生成占位条目 */
         if (raw.length === 0 && AUTO_DETECT) {
         const n = await detectImageCount(year, month);
         const maxDay = daysInMonth(year, month);
         raw = [];
         for (let i = 0; i < n; i++) {
-        /* 把 n 张图均匀分布在该月的日期上 */
         const day = n <= 1
         ? 1
         : 1 + Math.round(i * (maxDay - 1) / (n - 1));
@@ -1570,7 +1670,6 @@
         }
         }
 
-        /* 统一转成 { day, text, src } 结构，图片按数组下标命名 */
         return raw.map((entry, i) => {
         const isObj = entry !== null && typeof entry === 'object';
         const day = isObj ? entry.day : entry;
@@ -1584,7 +1683,7 @@
         }
 
         /* =====================================================
-        渲染：年份卡片
+        渲染：年份 / 月份 / 照片
         ===================================================== */
         function renderYears() {
         document.getElementById('yearsGrid').innerHTML = YEARS.map(y => `
@@ -1595,11 +1694,6 @@
         `).join('');
         }
 
-        /* =====================================================
-        渲染：月份卡片
-        ===================================================== */
-
-        /* 计算某月要显示的照片数量文案 */
         function monthCountLabel(year, month) {
         const raw = rawConfig(year, month);
         if (raw.length) return `${raw.length} 张照片`;
@@ -1607,7 +1701,7 @@
         if (AUTO_DETECT) {
         const key = `${year}-${month}`;
         if (detectDone.has(key)) return `${detectDone.get(key)} 张照片`;
-        return '自动识别…';       /* 尚未探测完，先占位 */
+        return '自动识别…';
         }
         return '暂无照片';
         }
@@ -1638,7 +1732,6 @@
 
         if (!AUTO_DETECT) return;
 
-        /* 对没有手动配置的月份做异步探测，完成后回填数量文案 */
         MONTHS.forEach((_, i) => {
         const m = i + 1;
         if (rawConfig(year, m).length) return;
@@ -1649,15 +1742,12 @@
         });
         }
 
-        /* =====================================================
-        渲染：照片列表
-        ===================================================== */
         async function renderPhotos(year, month) {
-        const token = ++renderToken;             /* 记录本次渲染令牌 */
+        const token = ++renderToken;
         const monthName = MONTHS[month - 1];
 
         const photos = await getMonthPhotos(year, month);
-        if (token !== renderToken) return;       /* 已被更新的渲染取代，放弃本次结果 */
+        if (token !== renderToken) return;
 
         viewPhotos.innerHTML = `
         <div class="subnav">
@@ -1685,13 +1775,12 @@
         }
 
         /* =====================================================
-        顶部 Tab 切换（Kim / Yoon / Sik）
+        Tab 切换
         ===================================================== */
         document.querySelectorAll('.tab').forEach(btn => {
         btn.addEventListener('click', () => {
         const id = btn.dataset.tab;
 
-        /* 同步按钮与面板的激活状态 */
         document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
         document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id));
 
@@ -1700,11 +1789,9 @@
         });
 
         /* =====================================================
-        Yoon 模块的层级导航（年份 → 月份 → 照片）
-        使用事件委托，统一在 #yoon 上监听点击
+        Yoon 层级导航
         ===================================================== */
         document.getElementById('yoon').addEventListener('click', async e => {
-        /* 点击年份卡片：进入月份视图 */
         const yearCard = e.target.closest('.year-card');
         if (yearCard) {
         curYear = Number(yearCard.dataset.year);
@@ -1714,7 +1801,6 @@
         return;
         }
 
-        /* 点击月份卡片：先显示“载入中…”，再异步渲染照片 */
         const monthCard = e.target.closest('.month-card');
         if (monthCard) {
         curMonth = Number(monthCard.dataset.month);
@@ -1731,7 +1817,6 @@
         return;
         }
 
-        /* 点击返回按钮：回到年份或月份视图 */
         const backBtn = e.target.closest('[data-back]');
         if (backBtn) {
         if (backBtn.dataset.back === 'years') {
@@ -1744,17 +1829,13 @@
         }
         });
 
-        /* =====================================================
-        初始化：首次渲染年份卡片
-        ===================================================== */
         renderYears();
 
         /* =====================================================
-        点击冒心效果：在点击位置生成一颗浅蓝心，飘起后自动消失
+        点击冒心
         ===================================================== */
-        const MAX_HEARTS = 36;               // 同屏最多心数，防止连点堆积
+        const MAX_HEARTS = 36;
 
-        /* 心形路径（viewBox 32 × 29） */
         const HEART_SVG = `
         <svg viewBox="0 0 32 29" aria-hidden="true">
         <path d="M16 28.6C16 28.6 .8 18.9 .8 9.9
@@ -1769,14 +1850,13 @@
         const heart = document.createElement('div');
         heart.className = 'heart-pop';
 
-        /* 随机大小 / 漂移 / 旋转 / 时长 / 色调，让每颗心都不一样 */
-        const size = 14 + Math.random() * 16;                    // 14 ~ 30px
-        const dx = (Math.random() - 0.5) * 70;                   // 左右漂移 ±35px
-        const rot = (Math.random() - 0.5) * 40;                  // 旋转 ±20°
-        const dur = 900 + Math.random() * 500;                   // 0.9 ~ 1.4s
-        const hue = 188 + Math.random() * 12;                    // 188 ~ 200
-        const sat = 82 + Math.random() * 12;                     // 82 ~ 94% 饱和度，更实
-        const light = 56 + Math.random() * 10;                   // 56 ~ 66% 明度，比之前深一档
+        const size = 14 + Math.random() * 16;
+        const dx = (Math.random() - 0.5) * 70;
+        const rot = (Math.random() - 0.5) * 40;
+        const dur = 900 + Math.random() * 500;
+        const hue = 188 + Math.random() * 12;
+        const sat = 82 + Math.random() * 12;
+        const light = 56 + Math.random() * 10;
 
         heart.style.left = x + 'px';
         heart.style.top = y + 'px';
@@ -1790,21 +1870,315 @@
 
         document.body.appendChild(heart);
 
-        /* 超出上限就移除最早的那颗 */
         const hearts = document.querySelectorAll('.heart-pop');
         if (hearts.length > MAX_HEARTS) hearts[0].remove();
 
-        /* 动画结束即回收；再加一个兜底定时器防止 animationend 未触发 */
         heart.addEventListener('animationend', () => heart.remove());
         setTimeout(() => heart.remove(), dur + 300);
         }
 
-        /* 全局监听点击：排除右键、以及带 data-no-heart 的元素 */
         document.addEventListener('click', e => {
-        if (e.button !== 0) return;                              // 只响应左键
-        if (e.target.closest('[data-no-heart]')) return;         // 需要屏蔽的元素可加此属性
+        if (e.button !== 0) return;
+        if (e.target.closest('[data-no-heart]')) return;
         spawnHeart(e.clientX, e.clientY);
         });
+
+        /* =====================================================
+        背景音乐
+        - 开屏动画开始时自动尝试播放
+        - 若被浏览器"自动播放策略"拦截，则在用户第一次交互时自动补播
+        - 左下角按钮可随时开关
+        ===================================================== */
+        (function () {
+        const audio = document.getElementById('bgm');
+        if (!audio) return;
+
+        const toggle = document.getElementById('bgmToggle');
+        const TARGET_VOL = 0.45;   // 最终音量（0 ~ 1），嫌吵改小一点
+        const FADE_IN = 1800;    // 淡入时长 ms
+
+        audio.volume = 0;
+
+        let userMuted = false;   // 用户主动关掉
+        let playing = false;
+        let fadeId = 0;
+
+        function updateBtn() {
+        if (!toggle) return;
+        toggle.classList.toggle('is-playing', playing && !userMuted);
+        toggle.classList.toggle('is-off', !(playing && !userMuted));
+        }
+
+        /* 音量淡入淡出 */
+        function fadeTo(target, ms) {
+        cancelAnimationFrame(fadeId);
+        const from = audio.volume;
+        const t0 = performance.now();
+        const clamp = v => Math.max(0, Math.min(1, v));
+
+        function step(now) {
+        const k = Math.min(1, (now - t0) / ms);
+        audio.volume = clamp(from + (target - from) * k);
+        if (k < 1) fadeId = requestAnimationFrame(step);
+        }
+        fadeId = requestAnimationFrame(step);
+        }
+
+        function startMusic() {
+        if (userMuted || playing) return;
+
+        const p = audio.play();
+
+        if (!p || typeof p.then !== 'function') {
+        // 老浏览器：无 Promise
+        playing = true;
+        fadeTo(TARGET_VOL, FADE_IN);
+        updateBtn();
+        return;
+        }
+
+        p.then(() => {
+        playing = true;
+        fadeTo(TARGET_VOL, FADE_IN);
+        updateBtn();
+        }).catch(() => {
+        // 被自动播放策略拦截，等待用户第一次交互
+        playing = false;
+        updateBtn();
+        });
+        }
+
+        /* 被拦截后：用户第一次点击 / 触摸 / 按键 时自动补播 */
+        ['pointerdown', 'touchstart', 'keydown', 'click'].forEach(evt => {
+        window.addEventListener(evt, () => {
+        if (!playing && !userMuted) startMusic();
+        }, { passive: true });
+        });
+
+        /* 开关按钮 */
+        if (toggle) {
+        toggle.addEventListener('click', e => {
+        e.stopPropagation();
+
+        if (playing && !userMuted) {
+        // 关：先淡出再暂停
+        userMuted = true;
+        playing = false;
+        fadeTo(0, 380);
+        setTimeout(() => { if (userMuted) audio.pause(); }, 400);
+        updateBtn();
+        } else {
+        // 开
+        userMuted = false;
+        startMusic();
+        }
+        });
+        }
+
+        /* 暴露给开屏动画调用 */
+        window.__startBGM = startMusic;
+
+        /* 兜底：万一开屏没启动（比如图片加载失败），2.5 秒后也尝试播放 */
+        setTimeout(() => { if (!playing && !userMuted) startMusic(); }, 2500);
+        })();
+
+        /* =====================================================
+        开屏：三列持续向上滚动 · 梦核版
+        - 每一列把图片纵向堆叠成一条轨道，复制一份实现无缝循环
+        - 轨道用 linear 无限平移，图片一张接一张从下方浮上来，中间不停顿
+        - 三列速度 / 起始位置各不相同，错落流动
+        - 每列各自的闪烁层由 JS 随机生成关键帧，节奏、色相、循环时长都不同
+        ===================================================== */
+        (function () {
+        const root = document.getElementById('flash');
+        if (!root) return;
+
+        /* ============ 配置区：改成你自己的图片路径 ============ */
+        // 三列，每列 8 张
+        const COLS = [
+        // 第一列
+        [
+        'images/2018-3-0.png',
+        'images/2020-1-0.png',
+        'images/2021-8-2.png',
+        'images/2022-10-6.png',
+        'images/2025-6-8.png',
+        'images/2026-6-4.png'
+        ],
+        // 第二列
+        [
+        'images/2018-4-0.png',
+        'images/2020-4-0.png',
+        'images/2021-11-0.png',
+        'images/2023-5-0.png',
+        'images/2025-6-24.png',
+        'images/2026-8-23.png'
+        ],
+        // 第三列
+        [
+        'images/2019-8-0.png',
+        'images/2020-12-0.png',
+        'images/2022-1-2.png',
+        'images/2023-11-0.png',
+        'images/2026-1-2.png',
+        'images/2026-8-40.png'
+        ]
+        ];
+
+        /* 每列滚动一整个循环的时长（ms），越大越慢 */
+        const COL_SPEED = [26000, 30000, 28000];
+
+        /* 每列的启动延迟（ms），负值 = 动画从循环中途开始，制造错位感 */
+        const COL_DELAY = [-2000, -7000, -12000];
+
+        /* 开屏总展示时长（ms），到点自动淡出 */
+        const TOTAL_TIME = 22000;
+
+        /* true = 每次刷新都播 */
+        const ONCE = true;
+        /* ====================================================== */
+
+        const STORAGE_KEY = 'yoonsik-flash-played';
+
+        if (!ONCE) {
+        try {
+        if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+        root.remove();
+        return;
+        }
+        } catch (e) { /* 隐私模式下忽略 */ }
+        }
+
+        const cols = Array.from(root.querySelectorAll('.flash-col'));
+        const skip = document.getElementById('flashSkip');
+
+        let finished = false;
+        const timers = [];
+
+        function later(fn, ms) {
+        const id = setTimeout(fn, ms);
+        timers.push(id);
+        return id;
+        }
+
+        function clearAll() {
+        timers.forEach(clearTimeout);
+        timers.length = 0;
+        }
+
+        /* 构建一列：把图片纵向堆叠成轨道，复制一份实现无缝循环 */
+        function buildCol(colEl, srcs, duration, delay) {
+        const track = document.createElement('div');
+        track.className = 'flash-track';
+        track.style.animationDuration = duration + 'ms';
+        if (delay) track.style.animationDelay = delay + 'ms';
+
+        // 复制一份，使 -50% 的位移刚好等于整个列表高度
+        [...srcs, ...srcs].forEach(src => {
+        const slide = document.createElement('div');
+        slide.className = 'flash-slide';
+        slide.style.backgroundImage = `url("${src}")`;
+        track.appendChild(slide);
+        });
+
+        colEl.appendChild(track);
+        }
+
+        /* 为一列生成「长度固定、节奏随机」的闪烁关键帧 */
+        function makeFlickerKeyframes(name, segments) {
+        let css = `@keyframes ${name} {\n`;
+        let pos = 0;
+        for (let i = 0; i < segments; i++) {
+        pos += 1 + Math.random() * 9;         // 每段 1%~10% 不等，跳得碎
+        if (pos > 100) pos = 100;
+        const op = (0.02 + Math.random() * 0.26).toFixed(3); // 0.02 ~ 0.28
+        css += `  ${pos.toFixed(2)}% { opacity: ${op}; }\n`;
+        if (pos >= 100) break;
+        }
+        css += `  100% { opacity: ${(0.02 + Math.random() * 0.26).toFixed(3)}; }\n`;
+        css += `}\n`;
+        return css;
+        }
+
+        /* 给三列各插一层闪烁，节奏 / 时长 / 相位各不相同 */
+        function injectColFlickers() {
+        const colEls = document.querySelectorAll('.flash-col');
+        const durations = [2600, 3300, 4100];   // 三列循环时长不同 → 永不同步
+        let css = '';
+
+        colEls.forEach((col, i) => {
+        const name = `colFlick_${i}`;
+        /* 越往后的列，关键帧段数越多 → 节奏越碎 */
+        css += makeFlickerKeyframes(name, 20 + i * 8);
+
+        const layer = document.createElement('div');
+        layer.className = 'flash-col-flicker';
+        layer.style.animation = `${name} ${durations[i]}ms linear infinite`;
+        /* 随机负延迟：动画从循环中途开始，三列错位感更强 */
+        layer.style.animationDelay = `-${Math.floor(Math.random() * durations[i])}ms`;
+        col.appendChild(layer);
+        });
+
+        const styleEl = document.createElement('style');
+        styleEl.textContent = css;
+        document.head.appendChild(styleEl);
+        }
+
+        /* 结束 */
+        function finish(fast) {
+        if (finished) return;
+        finished = true;
+
+        clearAll();
+        try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { }
+
+        document.documentElement.classList.remove('flash-lock');
+        root.classList.add('done');
+        setTimeout(() => root.remove(), fast ? 400 : 1400);
+        }
+
+        /* 预加载全部照片，避免滚到一半出现空白 */
+        const allSrcs = COLS.flat();
+        let loaded = 0;
+        allSrcs.forEach(src => {
+        const img = new Image();
+        img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === allSrcs.length) start();
+        };
+        img.src = src;
+        });
+
+        function start() {
+        if (finished) return;
+
+        document.documentElement.classList.add('flash-lock');
+
+        /* ★ 开屏动画开始 → 同步开始播放背景音乐 */
+        if (typeof window.__startBGM === 'function') window.__startBGM();
+
+        // 三列同时开始，但速度与相位不同 → 错落流动
+        cols.forEach((colEl, i) => {
+        buildCol(colEl, COLS[i], COL_SPEED[i], COL_DELAY[i]);
+        });
+
+        // 为每列注入随机闪烁层
+        injectColFlickers();
+
+        // 总时长后自动淡出
+        later(() => finish(false), TOTAL_TIME);
+        }
+
+        /* 跳过 */
+        skip.addEventListener('click', e => {
+        e.stopPropagation();
+        finish(true);
+        });
+        root.addEventListener('click', () => finish(true));
+        window.addEventListener('keydown', () => finish(true), { once: true });
+        window.addEventListener('wheel', () => finish(true), { once: true, passive: true });
+        window.addEventListener('touchmove', () => finish(true), { once: true, passive: true });
+        })();
 
     </script>
 
