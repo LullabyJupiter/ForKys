@@ -2004,37 +2004,38 @@
         'images/2020-1-0.png',
         'images/2021-8-2.png',        
         'images/2022-1-2.png',
-        'images/2022-10-6.png',
-        'images/2025-6-8.png',
+        'images/2026-1-2.png',
         'images/2026-6-4.png'
         ],
         // 第二列
         [
         'images/2018-4-0.png',
         'images/2020-4-0.png',
-        'images/2023-5-0.png',
+        'images/2021-12-0.png',
         'images/2023-11-0.png',
-        'images/2025-6-24.png',
+        'images/2025-6-4.png',
         'images/2026-8-23.png'
         ],
         // 第三列
         [
         'images/2019-8-0.png',
         'images/2020-12-0.png',
-        'images/2026-1-2.png',
+        'images/2022-2-3.png',
+        'images/2023-5-0.png',
+        'images/2025-6-8.png',
         'images/2026-8-40.png'
         ]
         ];
 
         /* 每列滚完全程的时长（ms），越大越慢 → 制造持续错位 */
-        const COL_SPEED = [20000, 23000, 25000];
+        const COL_SPEED = [17000, 18000, 17000];
 
         /* 每列起始纵向偏移（vh，负值 = 已经往上滚了一点点）
            0 / -5 / -10 → 开场就有细错落，第 1 张依然基本完整可见 */
         const COL_START = [0, -5, -10];
 
         /* 开屏总展示时长（ms）——要小于最快列的时长，否则那列会先停住 */
-        const TOTAL_TIME = 25000;
+        const TOTAL_TIME = 18500;
 
         /* true = 每次刷新都播 */
         const ONCE = true;
